@@ -97,6 +97,10 @@ class Worker(AbstractUser):
                              related_name="workers")
     team_lead = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = 'Worker'
+        verbose_name_plural = 'Workers'
+
     def __str__(self) -> str:
         return (f"{self.username}: "
                 f"({self.first_name} {self.last_name})"
