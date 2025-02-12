@@ -8,15 +8,15 @@
       <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
   {% endif %}
 
-
-  <h1>Project {{ project }}</h1>
-  <h3>Not completed!</h3>
+  <h1>Welcome {{ user.username }}!</h1>
+  <h2>Project {{ project }}</h2>
+  <h3>Not completed! Total {{ num_not_completed_tasks }}</h3>
   {% for task in tasks %}
     {% if not task.is_completed %}
       <p>{{ task.name }} deadline: {{ task.deadline}}</p>
     {% endif %}
   {% endfor %}
-  <h3>Completed!</h3>
+  <h3>Completed! Total {{ num_completed_tasks }}</h3>
   {% for task in tasks %}
     {% if task.is_completed %}
       <p>{{ task.name }}</p>
