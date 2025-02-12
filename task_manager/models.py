@@ -42,7 +42,11 @@ class Task(models.Model):
                                   related_name="tasks")
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                        related_name="tasks")
-    project = models.ForeignKey("Project", null=True, blank=True, on_delete=models.CASCADE)
+    project = models.ForeignKey("Project",
+                                null=True,
+                                blank=True,
+                                on_delete=models.CASCADE,
+                                related_name="tasks")
 
     def __str__(self):
         workers = ", ".join([str(worker) for worker in self.assignees.all()])
