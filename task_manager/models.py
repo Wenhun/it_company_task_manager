@@ -24,17 +24,16 @@ class Position(models.Model):
 
 
 class Task(models.Model):
-    class PriorityChoices(models.TextChoices):
-        HIGH = "High", "High"
-        MEDIUM = "Medium", "Medium"
-        LOW = "Low", "Low"
+    class PriorityChoices(models.IntegerChoices):
+        HIGH = 1, "High"
+        MEDIUM = 2, "Medium"
+        LOW = 3, "Low"
 
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
-    priority = models.CharField(
-        max_length=10,
+    priority = models.IntegerField(
         choices=PriorityChoices.choices,
         default=PriorityChoices.MEDIUM
     )
