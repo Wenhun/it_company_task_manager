@@ -45,7 +45,15 @@ class Task(models.Model):
                                        related_name="tasks")
 
     def __str__(self):
-        return f"{self.name}: priority: {self.priority}"
+        workers = ", ".join([str(worker) for worker in self.assignees.all()])
+
+        if self.is_completed:
+            return f"{self.name}: Completed! Workers: {workers}"
+        else:
+            return (f"{self.name}: Not Completed! "
+                    f"Priority: {self.priority}, "
+                    f"Deadline={self.deadline}, "
+                    f"Workers: {workers}")
 
 
 class Project(models.Model):
@@ -95,7 +103,7 @@ class Worker(AbstractUser):
                              null=True,
                              blank=True,
                              related_name="workers")
-    team_lead = models.BooleanField(default=False)
+    is_team_lead = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Worker'
