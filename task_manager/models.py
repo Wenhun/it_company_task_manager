@@ -42,6 +42,7 @@ class Task(models.Model):
                                   related_name="tasks")
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                        related_name="tasks")
+    project = models.ForeignKey("Project", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         workers = ", ".join([str(worker) for worker in self.assignees.all()])
@@ -63,7 +64,6 @@ class Project(models.Model):
         ON_HOLD = "On Hold", "On Hold"
 
     project_name = models.CharField(max_length=255)
-    tasks = models.ManyToManyField(Task, related_name="projects")
     deadline = models.DateField()
     budget = models.DecimalField(max_digits=12,
                                  decimal_places=2,
