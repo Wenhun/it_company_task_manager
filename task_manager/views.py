@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views import generic
 
-from task_manager.models import Task
+from task_manager.models import Task, Project
 
 
 @login_required
@@ -32,3 +32,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
+
+
+class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Project
