@@ -11,15 +11,19 @@
   <h1>Welcome {{ user.username }}!</h1>
   <h2>Project {{ project }}</h2>
   <h3>Not completed! Total {{ num_not_completed_tasks }}</h3>
+  <ul>
   {% for task in tasks %}
     {% if not task.is_completed %}
-      <p>{{ task.name }} deadline: {{ task.deadline}}</p>
+      <li><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a> deadline: {{ task.deadline}}</li>
     {% endif %}
   {% endfor %}
+  </ul>
   <h3>Completed! Total {{ num_completed_tasks }}</h3>
-  {% for task in tasks %}
+  <ul>
+    {% for task in tasks %}
     {% if task.is_completed %}
-      <p>{{ task.name }}</p>
+      <li><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a></li>
     {% endif %}
   {% endfor %}
+  </ul>
 {% endblock %}

@@ -15,9 +15,13 @@ admin.site.unregister(Group)
 
 @admin.register(Worker)
 class WorkerAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ("position", "team", "is_team_lead",)
+    list_display = UserAdmin.list_display + ("position",
+                                             "team",
+                                             "is_team_lead",)
     fieldsets = UserAdmin.fieldsets + (
-        (("Additional info", {"fields": ("position", "team", "is_team_lead",)}),)
+        (("Additional info", {"fields": ("position",
+                                         "team",
+                                         "is_team_lead",)}),)
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         (
