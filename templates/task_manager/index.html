@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Project {{ project }}</h1>
+  <h3>Not completed!</h3>
+  {% for task in tasks %}
+    {% if not task.is_completed %}
+      <p>{{ task.name }} deadline: {{ task.deadline}}</p>
+    {% endif %}
+  {% endfor %}
+  <h3>Completed!</h3>
+  {% for task in tasks %}
+    {% if task.is_completed %}
+      <p>{{ task.name }}</p>
+    {% endif %}
+  {% endfor %}
+</body>
+</html>
