@@ -10,6 +10,7 @@
     {% endif %}
   </h1>
   <h2>Category: {{ task.task_type }}</h2>
+  <h2>Project: <a href="{% url 'task_manager:project-detail' pk=task.project.pk %}">{{ task.project.project_name }}</a></h2>
   <h3>Task Detail:</h3>
   <p>{{ task.description }}</p>
   <h3>Assignees</h3>

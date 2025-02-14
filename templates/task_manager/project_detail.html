@@ -26,7 +26,7 @@
     <ul>
       {% for task in project.tasks.all %}
         {% if not task.is_completed %}
-        <li>{{ task.name }} Workers:
+        <li><a href="{% url 'task_manager:task-detail' pk=task.pk %}">{{ task.name }}</a> Workers:
           {% for assign in task.assignees.all %}
             {{ assign.username }}
           {% endfor %}</li>
@@ -40,7 +40,7 @@
     <ul>
       {% for task in project.tasks.all %}
         {% if task.is_completed %}
-        <li>{{ task.name }} Workers: 
+        <li><a href="{% url 'task_manager:task-detail' pk=task.pk %}">{{ task.name }}</a> Workers: 
           {% for assign in task.assignees.all %} 
             {{ assign.username }}
           {% endfor %}</li>
