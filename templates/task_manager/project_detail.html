@@ -18,22 +18,25 @@
     {% for team in  project.teams.all %}
       <li>{{ team }}</li>
     {% endfor %}
-  </ul>  
-  <h3>All tasks:</h3>
-  <h4>Active:</h4>
-  <ul>
-    {% for task in project.tasks.all %}
-      {% if not task.is_completed %}
-      <li>{{ task.name }} Workers: 
-        {% for assign in task.assignees.all %} 
-          {{ assign.username }} 
-        {% endfor %}</li>
-      {% endif %}
-    {% endfor %}
   </ul>
+
+  <h3>All tasks:</h3>
+  {% block not_completed_tasks %}
+  <h4>Active:</h4>
+    <ul>
+      {% for task in project.tasks.all %}
+        {% if not task.is_completed %}
+        <li>{{ task.name }} Workers:
+          {% for assign in task.assignees.all %}
+            {{ assign.username }}
+          {% endfor %}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endblock %}
   
-  <h4>Completed:</h4>
   {% block completed_tasks %}
+  <h4>Completed:</h4>
     <ul>
       {% for task in project.tasks.all %}
         {% if task.is_completed %}

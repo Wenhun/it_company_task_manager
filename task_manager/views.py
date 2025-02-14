@@ -16,7 +16,7 @@ def index(request: HttpRequest) -> HttpResponse:
         assignees=current_user_id)
     tasks = tasks.order_by("deadline", "priority")
     project = get_user_model().objects.get(
-        pk=current_user_id).team.project.project_name
+        pk=current_user_id).team.project
     num_completed_tasks = tasks.filter(is_completed=True).count()
     num_not_completed_tasks = tasks.filter(is_completed=False).count()
 

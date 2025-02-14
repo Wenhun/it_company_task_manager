@@ -9,7 +9,7 @@
   {% endif %}
 
   <h1>Welcome {{ user.username }}!</h1>
-  <h2>Project {{ project }}</h2>
+  <h2>Current project <a href="{% url "task_manager:project-detail" pk=project.id %}"> {{ project.project_name }}</a></h2>
   <h3>Not completed! Total {{ num_not_completed_tasks }}</h3>
   <ul>
   {% for task in tasks %}
