@@ -1,29 +1,95 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load task_type_image_changer %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-      <li>User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
-      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-    {% else %}
-      <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-  {% endif %}
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b>My task statistic</b></h5>
+  </header>
 
-  <h1>Welcome {{ user.username }}!</h1>
-  <h2>Current project <a href="{% url "task_manager:project-detail" pk=project.id %}"> {{ project.project_name }}</a></h2>
-  <h3>Not completed! Total {{ num_not_completed_tasks }}</h3>
-  <ul>
-  {% for task in tasks %}
-    {% if not task.is_completed %}
-      <li><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a> deadline: {{ task.deadline}}</li>
-    {% endif %}
-  {% endfor %}
-  </ul>
-  <h3>Completed! Total {{ num_completed_tasks }}</h3>
-  <ul>
-    {% for task in tasks %}
-    {% if task.is_completed %}
-      <li><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a></li>
-    {% endif %}
-  {% endfor %}
-  </ul>
+  <div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+      <div class="w3-container w3-red w3-padding-16">
+        <div class="w3-left"><img src="{% static 'images/tasks_all.svg' %}" alt="tasks-all" style="width:56px;height:56px;"></div>
+        <div class="w3-right">
+          <h3>{{ tasks.all.count }}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>All tasks owned</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-blue w3-padding-16">
+        <div class="w3-left"><img src="{% static 'images/tasks_progress.svg' %}" alt="tasks-progress" style="width:56px;height:56px;"></div>
+        <div class="w3-right">
+          <h3>{{ num_not_completed_tasks }}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Tasks in progress</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-teal w3-padding-16">
+        <div class="w3-left"><img src="{% static 'images/tasks-completed.svg' %}" alt="tasks-completed" style="width:56px;height:56px;"></div>
+        <div class="w3-right">
+          <h3>{{ num_completed_tasks }}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Completed tasks</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-container">
+    <h5>Current project</h5>
+    <div class="w3-button">
+      <img src="{% static 'images/project.svg' %}" alt="logout" style="width:18px;height:18px;">
+      <a href="{% url 'task_manager:project-detail' pk=project.id %}">
+        <b>{{ project.project_name }}</b>
+      </a>
+    </div>
+    <div class="w3-grey">
+      <div class="w3-container w3-center w3-padding w3-green" style="width:25%">Completed: NUM_COMPLETED / NUM_ALL </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-twothird">
+        <h5>Current tasks</h5>
+        <table class="w3-table w3-striped w3-white" >
+          {% for task in tasks|slice:":10" %}
+              {% if not task.is_completed %}
+              <tr>
+                  <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                  <td><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a> </td>
+                  <td><i>Deadline: {{ task.deadline }}</i></td>
+                  <td><i>Priority: {{ task.get_priority_display }}</i></td>
+              </tr>
+              {% endif %}
+            {% empty %}
+            You have no tasks!
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="w3-container">
+    <h5>My team:</h5>
+    {% for worker in team_workers%}
+    <ul class="w3-ul w3-card-4 w3-white">
+        <li class="w3-padding-16">
+        <img src={% static 'images/worker-cart.svg' %} class="w3-left w3-circle w3-margin-right" style="width:35px">
+        <span class="w3-xlarge">{{ worker.username }}</span><br>
+      </li>
+    </ul>
+      {% empty %}
+      <h3>You alone in this team :(</h3>
+      {% endfor %}
+  </div>
+  <hr>
 {% endblock %}

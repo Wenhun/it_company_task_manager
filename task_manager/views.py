@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views import generic
 
-from task_manager.models import Task, Project
+from task_manager.models import Task, Project,Team
 
 
 @login_required
@@ -19,12 +19,14 @@ def index(request: HttpRequest) -> HttpResponse:
         pk=current_user_id).team.project
     num_completed_tasks = tasks.filter(is_completed=True).count()
     num_not_completed_tasks = tasks.filter(is_completed=False).count()
+    team_workers = get_user_model().objects.filter(team=request.user.team).exclude(id=current_user_id)
 
     context = {
         "tasks": tasks,
         "project": project,
         "num_completed_tasks": num_completed_tasks,
         "num_not_completed_tasks": num_not_completed_tasks,
+        "team_workers": team_workers
     }
 
     return render(request, "task_manager/index.html", context=context)
