@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,13 +22,15 @@ def index(request: HttpRequest) -> HttpResponse:
     num_completed_tasks = tasks.filter(is_completed=True).count()
     num_not_completed_tasks = tasks.filter(is_completed=False).count()
     team_workers = get_user_model().objects.filter(team=request.user.team).exclude(id=current_user_id)
+    current_date = datetime.now().date()
 
     context = {
         "tasks": tasks,
         "project": project,
         "num_completed_tasks": num_completed_tasks,
         "num_not_completed_tasks": num_not_completed_tasks,
-        "team_workers": team_workers
+        "team_workers": team_workers,
+        "current_date": current_date
     }
 
     return render(request, "task_manager/index.html", context=context)
@@ -35,6 +39,13 @@ def index(request: HttpRequest) -> HttpResponse:
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_date = datetime.now()
+        task = context['task']
+        days_difference = (current_date.date() - task.deadline).days
+        context['days_difference'] = days_difference
+        context['is_overdue'] = days_difference > 0
+        return context
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project

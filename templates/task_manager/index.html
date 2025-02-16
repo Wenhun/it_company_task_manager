@@ -4,7 +4,7 @@
 
 {% block content %}
   <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
+  <header class="w3-container " style="padding-top:22px">
     <h5><b>My task statistic</b></h5>
   </header>
 
@@ -65,7 +65,14 @@
               <tr>
                   <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
                   <td><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a> </td>
-                  <td><i>Deadline: {{ task.deadline }}</i></td>
+                  <td>
+                    <i>
+                      Deadline: {{ task.deadline }}
+                      {% if task.deadline < current_date %}
+                        <div style="color: red">OVERDUE!</div>
+                      {% endif %}
+                    </i>
+                  </td>
                   <td><i>Priority: {{ task.get_priority_display }}</i></td>
               </tr>
               {% endif %}
