@@ -1,61 +1,83 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load task_type_image_changer %}
 
 {% block content %}
-  <h1>
-    {{ project.project_name }}
-    Status: 
-    {% if project.status == "Active"%}
-      {{ project.status }} Deadline: {{ project.deadline }}
-    {% else %}
-      {{ project.status }}
-    {% endif %}
-  </h1>
-  <h3>Project Detail:</h3>
-  <p>{{ project.description }}</p>
-  <p>Project budget: {{ project.budget }}</p>
-  <h3>Teams:</h3>
-  <ul>
-    {% for team in  project.teams.all %}
-      <li>{{ team }}</li>
-    {% endfor %}
-  </ul>
+  <header class="w3-container w3-green">
+    <h1>
+      {{ project.project_name }}
+      Status:
+      {% if project.status == "Active"%}
+        {{ project.status }} Deadline: {{ project.deadline }}
+      {% else %}
+        {{ project.status }}
+      {% endif %}
+    </h1>
+  </header>
 
-  <h3>All tasks:</h3>
-  {% block not_completed_tasks %}
-  <h4>Active:</h4>
+  <div class="w3-container">
+    <h3>Project Detail:</h3>
+    <p>{{ project.description }}</p>
+    <p>Project budget: {{ project.budget }} $</p>
+    <h3>Teams:</h3>
     <ul>
-      {% for task in project.tasks.all %}
-        {% if not task.is_completed %}
-        <li><a href="{% url 'task_manager:task-detail' pk=task.pk %}">{{ task.name }}</a> Workers:
-          {% for assign in task.assignees.all %}
-            {{ assign.username }}
-          {% endfor %}</li>
-        {% endif %}
+      {% for team in  project.teams.all %}
+        <li><i class="fa fa-users fa-fw"></i> {{ team }}</li>
       {% endfor %}
     </ul>
-  {% endblock %}
-  
-  {% block completed_tasks %}
-  <h4>Completed:</h4>
-    <ul>
-      {% for task in project.tasks.all %}
-        {% if task.is_completed %}
-        <li><a href="{% url 'task_manager:task-detail' pk=task.pk %}">{{ task.name }}</a> Workers: 
-          {% for assign in task.assignees.all %} 
-            {{ assign.username }}
-          {% endfor %}</li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  {% endblock %}
-  
-  <h1>
-    <a href="#">
+    <h3>All tasks:</h3>
+    {% block not_completed_tasks %}
+      <h4>Active:</h4>
+      <table class="w3-table w3-striped w3-white" >
+        {% for task in project.tasks.all %}
+            {% if not task.is_completed %}
+              <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+                  <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                  <td>{{ task.name }}</td>
+                  <td>
+                    <i>
+                      Deadline: {{ task.deadline }}
+                      {% if task.deadline < current_date %}
+                        <div style="color: red">OVERDUE!</div>
+                      {% endif %}
+                    </i>
+                  </td>
+                  <td><i>Priority: {{ task.get_priority_display }}</i></td>
+                  <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
+              </tr>
+            {% endif %}
+          {% empty %}
+          Project haven't more task!
+        {% endfor %}
+      </table>
+    {% endblock %}
+
+    {% block completed_tasks %}
+      <h4>Completed:</h4>
+      <table class="w3-table w3-striped w3-white" >
+        {% for task in project.tasks.all %}
+            {% if task.is_completed %}
+            <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                <td>{{ task.name }}</td>
+                <td>Completed!</td>
+                <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
+            </tr>
+            {% endif %}
+          {% empty %}
+          No task completed!
+        {% endfor %}
+      </table>
+    </div>
+    {% endblock %}
+  <hr>
+
+  <div class="w3-container">
+    <a href="#" class="w3-button w3-red">
       Delete
     </a>
-
-    <a href="#">
+    <a href="#" class="w3-button w3-blue">
       Update
     </a>
-  </h1>
+  </div>
 {% endblock %}

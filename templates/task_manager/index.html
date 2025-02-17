@@ -62,9 +62,9 @@
         <table class="w3-table w3-striped w3-white" >
           {% for task in tasks|slice:":10" %}
               {% if not task.is_completed %}
-              <tr>
+              <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
                   <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
-                  <td><a href="{% url "task_manager:task-detail" pk=task.id %}"> {{ task.name }}</a> </td>
+                  <td>{{ task.name }}</td>
                   <td>
                     <i>
                       Deadline: {{ task.deadline }}
