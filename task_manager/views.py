@@ -86,3 +86,9 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context["current_date"] = datetime.now().date()
         return context
+
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    model = get_user_model()
+    context_object_name = "worker_list"
+    template_name = "task_manager/worker_list.html"
+    paginate_by = 20
