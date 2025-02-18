@@ -33,6 +33,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   {% block content %}
   {% endblock %}
+  <hr>
+  {% block pagination %}
+      {% include "includes/pagination.html" %}
+  {% endblock %}
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
     <h4>FOOTER</h4>

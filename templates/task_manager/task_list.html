@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load task_type_image_changer %}
+
+
+{% block content %}
+  <header class="w3-container w3-green">
+    <h1>
+      Tasks
+    </h1>
+  </header>
+  <hr>
+  <table class="w3-table w3-striped w3-white" >
+    {% for task in task_list %}
+      {% if not task.is_completed and task.deadline > current_date %}
+        <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+          <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+          <td>{{ task.name }}</td>
+          <td>
+            <i>
+              Deadline: {{ task.deadline }}
+            </i>
+          </td>
+          <td><i>Priority: {{ task.get_priority_display }}</i></td>
+          <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
+        </tr>
+      {% endif %}
+      {% if not task.is_completed and task.deadline < current_date %}
+        <tr class="w3-hover-red" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+          <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+          <td>{{ task.name }}</td>
+          <td>
+            <i>
+              Deadline: {{ task.deadline }}
+              <div style="color: red">OVERDUE!</div>
+            </i>
+          </td>
+          <td><i>Priority: {{ task.get_priority_display }}</i></td>
+          <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
+        </tr>
+      {% endif %}
+      {% if task.is_completed%}
+        <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+          <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+          <td>{{ task.name }}</td>
+          <td><i style="color: green">Completed!</i></td>
+          <td><i></i></td>
+          <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
+        </tr>
+      {% endif %}
+    {% empty %}
+    No tasks!
+    {% endfor %}
+  </table>
+{% endblock %}
