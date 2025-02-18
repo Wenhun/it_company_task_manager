@@ -3,17 +3,56 @@
 {% load task_type_image_changer %}
 
 {% block content %}
-  <header class="w3-container w3-green">
-    <h1>
-      {{ project.project_name }}
-      Status:
-      {% if project.status == "Active"%}
-        {{ project.status }} Deadline: {{ project.deadline }}
-      {% else %}
-        {{ project.status }}
-      {% endif %}
-    </h1>
-  </header>
+  {% if project.status == "Active" and not is_overdue%}
+    <header class="w3-container w3-blue">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }} Deadline: {{ project.deadline }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Active" and is_overdue%}
+    <header class="w3-container w3-red">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }} Deadline: {{ project.deadline }}
+        The project is {{ days_difference }} days overdue!!
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Canceled"%}
+    <header class="w3-container w3-orange">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "On Hold"%}
+    <header class="w3-container w3-gray">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Completed"%}
+    <header class="w3-container w3-green">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
 
   <div class="w3-container">
     <h3>Project Detail:</h3>
