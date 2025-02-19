@@ -67,16 +67,7 @@
 
   <div class="w3-container">
     <h5>My team:</h5>
-    {% for worker in team_workers%}
-    <ul class="w3-ul w3-card-4 w3-white">
-        <li class="w3-padding-16">
-        <img src={% static 'images/worker-cart.svg' %} class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">{{ worker.username }}</span><br>
-      </li>
-    </ul>
-      {% empty %}
-      <h3>You alone in this team :(</h3>
-      {% endfor %}
+    {% include 'includes/team_list.html' with workers=team_workers image_size=35 line_size="large" empty_text="You alone in this team" %}
   </div>
   <hr>
 {% endblock %}

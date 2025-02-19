@@ -10,7 +10,7 @@
   <hr>
   <table class="w3-table w3-striped w3-white" >
     {% for worker in worker_list %}
-      <tr class="w3-hover-blue" onclick="location.href='#';" style="cursor: pointer;">
+      <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:worker-detail' pk=worker.pk %}';" style="cursor: pointer;">
         <td>{{ worker.username }}</td>
         <td>{{ worker.first_name }}</td>
         <td>{{ worker.last_name }}</td>

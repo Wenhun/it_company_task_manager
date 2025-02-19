@@ -33,17 +33,8 @@
   <div class="w3-panel w3-pale-green w3-border w3-round" style="padding: 10px; margin: 10px">{{ task.description }}</div>
     <div class="w3-container">
       <h5>Assignees:</h5>
-      {% for worker in task.assignees.all%}
-        <ul class="w3-ul w3-card-4 w3-white">
-            <li class="w3-padding-10">
-            <img src={% static 'images/worker-cart.svg' %} class="w3-left w3-circle w3-margin-right" style="width:25px">
-            <span class="w3-xmedium">{{ worker.username }}</span><br>
-          </li>
-        </ul>
-        {% empty %}
-          <h3>You alone in this team :(</h3>
-      {% endfor %}
-    </div>
+      {% include 'includes/team_list.html' with workers=task.assignees.all image_size=25 line_size="medium" empty_text="No more workers" %}
+  </div>
   <hr>
 
   <div class="w3-container">

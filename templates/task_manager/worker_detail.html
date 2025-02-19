@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load task_type_image_changer %}
+
+{% block content %}
+  <header class="w3-container w3-green">
+    {% if worker.first_name and worker.last_name %}
+      <h1>{{ worker.first_name }} {{ worker.last_name }}</h1>
+    {% else %}
+      <h1>{{ worker.username }}</h1>
+    {% endif %}
+    <h2>Position: {{ worker.position }}</h2>
+  </header>
+  <div class="w3-container">
+    <h3>Worker Detail:</h3>
+    <p>Username: {{ worker.username }}</p>
+    <p>E-mail: {{ worker.email }}</p>
+    <p>
+      Current team: {{ worker.team }} work on project
+      <a href="{% url 'task_manager:project-detail' pk=worker.team.project.pk %}">
+        {{ worker.team.project.project_name }}
+      </a>
+    </p>
+
+    <h3>All tasks:</h3>
+
+    <button
+        onclick="accordion_function('active_tasks')"
+        class="w3-button w3-block w3-left-align w3-blue">
+      Active tasks..
+    </button>
+
+    <div id="active_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=tasks|slice:":10" show_active=True show_overdue=True show_completed=False %}
+    </div>
+
+    <hr>
+
+    <button
+        onclick="accordion_function('completed_tasks')"
+        class="w3-button w3-block w3-left-align w3-green">
+      Completed tasks...
+    </button>
+
+    <div id="completed_tasks" class="w3-hide w3-container">
+      <table class="w3-table w3-striped w3-white">
+        {% for task in tasks %}
+          {% if task.is_completed %}
+            <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
+              <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+              <td>{{ task.name }}</td>
+              <td><i style="color: green">Completed!</i></td>
+              <td><i>Project: {{ task.project.project_name }}</i></td>
+            </tr>
+          {% endif %}
+          {% empty %}
+            <tr><td colspan="5">No Completed Tasks!</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function accordion_function(id) {
+      var x = document.getElementById(id);
+      if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+      } else {
+        x.className = x.className.replace(" w3-show", "");
+      }
+    }
+  </script>
+
+{% endblock %}
