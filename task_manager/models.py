@@ -29,6 +29,9 @@ class Task(models.Model):
         MEDIUM = 2, "Medium"
         LOW = 3, "Low"
 
+    class Meta:
+        ordering = ["deadline", "priority"]
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateField()
