@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load task_type_image_changer %}
 
 {% block content %}
   {% if project.status == "Active" and not is_overdue%}
@@ -69,50 +67,11 @@
 
     <h3>All tasks:</h3>
 
-    {% block not_completed_tasks %}
-      <h4>Active:</h4>
-      <table class="w3-table w3-striped w3-white" >
-        {% for task in project.tasks.all %}
-            {% if not task.is_completed %}
-              <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                  <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
-                  <td>{{ task.name }}</td>
-                  <td>
-                    <i>
-                      Deadline: {{ task.deadline }}
-                      {% if task.deadline < current_date %}
-                        <div style="color: red">OVERDUE!</div>
-                      {% endif %}
-                    </i>
-                  </td>
-                  <td><i>Priority: {{ task.get_priority_display }}</i></td>
-                  <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
-              </tr>
-            {% endif %}
-          {% empty %}
-          Project haven't more task!
-        {% endfor %}
-      </table>
-    {% endblock %}
+    <h4>Active:</h4>
+    {% include "includes/task_table.html" with tasks=project.tasks.all show_active=True show_overdue=True show_completed=False %}
 
-    {% block completed_tasks %}
-      <h4>Completed:</h4>
-      <table class="w3-table w3-striped w3-white" >
-        {% for task in project.tasks.all %}
-            {% if task.is_completed %}
-            <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
-                <td>{{ task.name }}</td>
-                <td>Completed!</td>
-                <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
-            </tr>
-            {% endif %}
-          {% empty %}
-          No task completed!
-        {% endfor %}
-      </table>
-    </div>
-    {% endblock %}
+    <h4>Completed:</h4>
+    {% include "includes/task_table.html" with tasks=project.tasks.all show_active=False show_overdue=False show_completed=True %}
 
   <hr>
 

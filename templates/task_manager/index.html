@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load task_type_image_changer %}
 
 {% block content %}
   <!-- Header -->
@@ -56,33 +55,14 @@
   <hr>
 
   <div class="w3-panel">
-    <div class="w3-row-padding" style="margin:0 -16px">
-      <div class="w3-twothird">
-        <h5>Current tasks</h5>
-        <table class="w3-table w3-striped w3-white" >
-          {% for task in tasks|slice:":10" %}
-              {% if not task.is_completed %}
-              <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                  <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
-                  <td>{{ task.name }}</td>
-                  <td>
-                    <i>
-                      Deadline: {{ task.deadline }}
-                      {% if task.deadline < current_date %}
-                        <div style="color: red">OVERDUE!</div>
-                      {% endif %}
-                    </i>
-                  </td>
-                  <td><i>Priority: {{ task.get_priority_display }}</i></td>
-              </tr>
-              {% endif %}
-            {% empty %}
-            You have no tasks!
-          {% endfor %}
-        </table>
+      <div class="w3-row-padding" style="margin:0 -16px">
+          <div class="w3-twothird">
+              <h5>Current tasks</h5>
+              {% include "includes/task_table.html" with tasks=tasks|slice:":10" show_active=True show_overdue=True show_completed=False %}
+          </div>
       </div>
-    </div>
   </div>
+
   <hr>
 
   <div class="w3-container">
