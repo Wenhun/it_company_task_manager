@@ -60,6 +60,7 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
         days_difference = (current_date.date() - task.deadline).days
         context["days_difference"] = days_difference
         context["is_overdue"] = days_difference > 0
+        context["current_date"] = current_date.date()
         return context
 
 
