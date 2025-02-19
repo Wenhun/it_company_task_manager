@@ -1,0 +1,12 @@
+<tr class="w3-hover-{{ color }}" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
+  <td>{{ project.project_name }}</td>
+  <td>
+    <i>
+      {{ content }}
+      {% if is_active %}
+        {{ project.deadline }}
+      {% endif %}
+    </i>
+  </td>
+  <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
+</tr>

@@ -10,65 +10,25 @@
   <table class="w3-table w3-striped w3-white" >
     {% for project in project_list %}
       {% if project.status == "Active" and project.deadline > current_date %}
-        <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
-          <td>{{ project.project_name }}</td>
-          <td>
-            <i>
-              Deadline: {{ project.deadline }}
-            </i>
-          </td>
-          <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
-        </tr>
+        {% include "includes/project_table.html" with color="blue" content="Deadline: " is_active=True %}
       {% endif %}
 
       {% if project.status == "Active" and project.deadline < current_date %}
-        <tr class="w3-hover-red" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
-          <td>{{ project.project_name }}</td>
-          <td>
-            <i>
-              Deadline: {{ project.deadline }}
-              <div style="color: red">OVERDUE!</div>
-            </i>
-          </td>
-          <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
-        </tr>
+        {% include "includes/project_table.html" with color="red" content='<div style="color: red">OVERDUE!</div> Deadline: ' is_active=True %}
       {% endif %}
 
       {% if project.status == "Completed"%}
-        <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
-          <td>{{ project.project_name }}</td>
-          <td>
-            <i>
-              <div style="color: red">Completed!</div>
-            </i>
-          </td>
-          <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
-        </tr>
+        {% include "includes/project_table.html" with color="green" content="<div style='color: greeb'>Completed!</div>" is_active=False %}
       {% endif %}
 
       {% if project.status == "Canceled"%}
-        <tr class="w3-hover-orange" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
-          <td>{{ project.project_name }}</td>
-          <td>
-            <i>
-              <div style="color: orange">Canceled</div>
-            </i>
-          </td>
-          <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
-        </tr>
+        {% include "includes/project_table.html" with color="orange" content='<div style="color: purple">Canceled</div>' is_active=False %}
       {% endif %}
 
       {% if project.status == "On Hold"%}
-        <tr class="w3-hover-gray" onclick="location.href='{% url "task_manager:project-detail" pk=project.id %}';" style="cursor: pointer;">
-          <td>{{ project.project_name }}</td>
-          <td>
-            <i>
-              <div style="color: gray">On hold!</div>
-            </i>
-          </td>
-          <td><i>Teams: {% for team in project.teams.all %} {{ team.name }}{% endfor %}</i></td>
-        </tr>
+        {% include "includes/project_table.html" with color="gray" content='<div style="color: dark-gray">On hold</div>' is_active=False %}
       {% endif %}
+
     {% empty %}
     No projects!
     {% endfor %}
