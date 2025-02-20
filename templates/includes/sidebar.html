@@ -4,7 +4,7 @@
     <div class="w3-col s8 w3-bar">
       {% if user.is_authenticated %}
         <span>Welcome, <strong>{{ user.get_username }}</strong></span><br>
-        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+        <a href="{% url 'task_manager:worker-detail' pk=user.pk %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
         <a href="{% url 'logout' %}" class="w3-bar-item w3-button"><img src="{% static 'images/logout.svg' %}" alt="logout" style="width:18px;height:18px;"></a>
       {% else %}
         <span><strong>Please, login</strong></span><br>
@@ -21,7 +21,8 @@
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
     <a href="{% url 'task_manager:task-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/tasks_all_sidebar.svg' %}" alt="all tasks" style="width:18px;height:18px;">  All Tasks</a>
     <a href="{% url 'task_manager:project-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/project.svg' %}" alt="all tasks" style="width:18px;height:18px;">  All Projects</a>
-    <a href="{% url 'task_manager:worker-list' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Workers</a>
+    <a href="{% url 'task_manager:worker-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/worker.svg' %}" alt="all tasks" style="width:18px;height:18px;">  Workers</a>
+    <a href="{% url 'task_manager:worker-list' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Teams</a>
 {#    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>#}
 {#    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>#}
 {#    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>#}
