@@ -4,9 +4,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import generic
 
+from task_manager.forms import TaskForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -64,7 +66,7 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class TasksListView(LoginRequiredMixin, generic.ListView):
+class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
     template_name = "task_manager/task_list.html"
@@ -127,3 +129,28 @@ def categories(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "task_manager/category.html", context=context)
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    form_class = TaskForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        next_url = self.request.GET.get('next', '/')
+        worker_id = self.request.GET.get('worker_id')
+        project_id = self.request.GET.get('project_id')
+        if worker_id:
+            worker = get_object_or_404(get_user_model(), id=worker_id)
+            initial['assignees'] = [worker]
+
+        if project_id:
+            project = get_object_or_404(Project, id=project_id)
+            initial['project'] = project
+
+        return initial
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        next_url = self.request.POST.get('next', '/')
+        return

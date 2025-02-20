@@ -64,9 +64,12 @@
         <li><i class="fa fa-users fa-fw"></i> {{ team }}</li>
       {% endfor %}
     </ul>
+  </div>
 
-    <h3>All tasks:</h3>
+  <h3 class="w3-container w3-cell">All tasks:</h3>
+  <a class="w3-button w3-cell w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}&project_id={{ project.id }}">Add new task</a>
 
+  <div class="w3-container">
     <h4>Active:</h4>
     {% include "includes/task_table.html" with tasks=project.tasks.all show_active=True show_overdue=True show_completed=False %}
 
@@ -83,5 +86,5 @@
       Update
     </a>
   </div>
-
+</div>
 {% endblock %}

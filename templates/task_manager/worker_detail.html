@@ -21,9 +21,13 @@
         {{ worker.team.project.project_name }}
       </a>
     </p>
+  </div>
 
-    <h3>All tasks:</h3>
+  <h3 class="w3-container w3-cell">All tasks:</h3>
+  <a class="w3-button w3-cell w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}&worker_id={{ worker.id }}">Add new task</a>
+  <hr>
 
+  <div class="w3-container">
     <button
         onclick="accordion_function('active_tasks')"
         class="w3-button w3-block w3-left-align w3-blue">
@@ -60,15 +64,6 @@
     </div>
   </div>
 
-  <script>
-    function accordion_function(id) {
-      var x = document.getElementById(id);
-      if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-      } else {
-        x.className = x.className.replace(" w3-show", "");
-      }
-    }
-  </script>
+  {% include 'includes/accordion_function.html' %}
 
 {% endblock %}

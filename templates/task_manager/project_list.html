@@ -9,7 +9,7 @@
   <hr>
   <table class="w3-table w3-striped w3-white" >
     {% for project in project_list %}
-      {% if project.status == "Active" and project.deadline > current_date %}
+      {% if project.status == "Active" and project.deadline >= current_date %}
         {% include "includes/project_table.html" with color="blue" content="Deadline: " is_active=True %}
       {% endif %}
 
