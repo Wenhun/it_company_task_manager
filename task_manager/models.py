@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 
 
 class TaskType(models.Model):
@@ -86,6 +87,9 @@ class Project(models.Model):
     def __str__(self) -> str:
         return f"{self.project_name}, status: {self.status}"
 
+    def get_absolute_url(self):
+        return reverse("task_manager:project-detail", kwargs={"pk": self.pk})
+
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
@@ -119,3 +123,6 @@ class Worker(AbstractUser):
         return (f"{self.username}: "
                 f"({self.first_name} {self.last_name})"
                 f"Position: {self.position.name}")
+
+    def get_absolute_url(self):
+        return reverse("task_manager:worker-detail", kwargs={"pk": self.pk})

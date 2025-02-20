@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -89,6 +89,7 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         context["current_date"] = datetime.now().date()
         return context
 
+
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
     context_object_name = "worker_list"
@@ -103,7 +104,9 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["current_date"] = datetime.now().date()
-        context["tasks"] = Task.objects.prefetch_related("assignees").filter(assignees=context["worker"].id)
+        context["tasks"] = Task.objects.prefetch_related("assignees").filter(
+            assignees=context["worker"].id
+        )
         return context
 
 
@@ -137,20 +140,23 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        next_url = self.request.GET.get('next', '/')
-        worker_id = self.request.GET.get('worker_id')
-        project_id = self.request.GET.get('project_id')
+        next_url = self.request.GET.get("next", "/")
+        worker_id = self.request.GET.get("worker_id")
+        project_id = self.request.GET.get("project_id")
         if worker_id:
             worker = get_object_or_404(get_user_model(), id=worker_id)
-            initial['assignees'] = [worker]
+            initial["assignees"] = [worker]
 
         if project_id:
             project = get_object_or_404(Project, id=project_id)
-            initial['project'] = project
+            initial["project"] = project
 
         return initial
 
+    def get_success_url(self):
+        next_url = self.request.POST.get("next", "/")
+        return next_url
+
     def form_valid(self, form):
         response = super().form_valid(form)
-        next_url = self.request.POST.get('next', '/')
-        return
+        return redirect(self.get_success_url())
