@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header class="w3-container w3-green">
+    <h1>
+      Teams
+    </h1>
+  </header>
+  <hr>
+  <table class="w3-table w3-striped w3-white" >
+    {% for team in team_list %}
+      <tr class="w3-hover-blue" onclick="location.href='#';" style="cursor: pointer;">
+        <td>{{ team.name }}</td>
+        <td>{{ team.project.project_name }}</td>
+        <td>{% for worker in team.workers.all %} {{ worker.username }}<br>{% endfor %}</td>
+      </tr>
+    {% empty %}
+    No teams!
+    {% endfor %}
+  </table>
+{% endblock %}

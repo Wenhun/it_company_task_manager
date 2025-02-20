@@ -103,3 +103,10 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         context["current_date"] = datetime.now().date()
         context["tasks"] = Task.objects.prefetch_related("assignees").filter(assignees=context["worker"].id)
         return context
+
+
+class TeamListView(LoginRequiredMixin, generic.ListView):
+    model = Team
+    context_object_name = "team_list"
+    template_name = "task_manager/team_list.html"
+    paginate_by = 20
