@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views import generic
 
-from task_manager.models import Task, Project, Team
+from task_manager.models import Task, Project, Team, TaskType, Position
 
 
 @login_required
@@ -114,3 +114,16 @@ class TeamListView(LoginRequiredMixin, generic.ListView):
 
 class TeamDetailView(LoginRequiredMixin, generic.DetailView):
     model = Team
+
+
+@login_required
+def categories(request: HttpRequest) -> HttpResponse:
+    task_types = TaskType.objects.all()
+    positions = Position.objects.all()
+
+    context = {
+        "task_types": task_types,
+        "positions": positions,
+    }
+
+    return render(request, "task_manager/category.html", context=context)
