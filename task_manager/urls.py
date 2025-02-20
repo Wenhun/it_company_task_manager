@@ -7,7 +7,8 @@ from task_manager.views import (index,
                                 ProjectListView,
                                 WorkerListView,
                                 WorkerDetailView,
-                                TeamListView)
+                                TeamListView,
+                                TeamDetailView)
 
 app_name = "task_manager"
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path("workers/", WorkerListView.as_view(), name="worker-list"),
     path("workers/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),
     path("teams/", TeamListView.as_view(), name="team-list"),
+    path("teams/<int:pk>/", TeamDetailView.as_view(), name="team-detail"),
 ]

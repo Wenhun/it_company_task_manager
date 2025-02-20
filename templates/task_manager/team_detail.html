@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+    <h1>
+      {{ team.name }}
+    </h1>
+  </header>
+
+  <div class="w3-container">
+    <h3>Team Detail:</h3>
+    <h4>Current project: <a href="{% url 'task_manager:project-detail' pk=team.project.pk %}">{{ team.project.project_name }}</a></h4>
+  </div>
+
+  {% if team.description %}
+    <div class="w3-panel w3-pale-green w3-border w3-round" style="padding: 10px; margin: 10px">{{ team.description }}</div>
+  {% endif %}
+    <div class="w3-container">
+      <h5>Workers:</h5>
+      {% include 'includes/team_list.html' with workers=team.workers.all image_size=25 line_size="medium" empty_text="No more workers" %}
+    </div>
+  <hr>
+
+  <div class="w3-container">
+    <a href="#" class="w3-button w3-red">
+      Delete
+    </a>
+    <a href="#" class="w3-button w3-blue">
+      Update
+    </a>
+  </div>
+{% endblock %}
