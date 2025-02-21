@@ -153,8 +153,7 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
         return initial
 
     def get_success_url(self):
-        next_url = self.request.POST.get("next", "/")
-        return next_url
+        return self.request.POST.get("next", "/")
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -162,5 +161,10 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = TaskForm
 
     def get_success_url(self):
-        next_url = self.request.POST.get("next", "/")
-        return next_url
+        return self.request.POST.get("next", "/")
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task_manager:task-list")
+
