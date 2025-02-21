@@ -41,7 +41,7 @@
     <a href="#" class="w3-button w3-red">
       Delete
     </a>
-    <a href="#" class="w3-button w3-blue">
+    <a href="{% url 'task_manager:task-update' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-blue">
       Update
     </a>
   </div>

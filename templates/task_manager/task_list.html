@@ -7,7 +7,7 @@
       Tasks▼</button>
       </h1>
     <div id="project_links" class="w3-hide">
-      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}">Add new task</a>
+      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}">Add new task</a>
     </div>
     <hr>
    {% include "includes/task_table.html" with tasks=task_list show_active=True show_overdue=True show_completed=True %}

@@ -140,7 +140,6 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        next_url = self.request.GET.get("next", "/")
         worker_id = self.request.GET.get("worker_id")
         project_id = self.request.GET.get("project_id")
         if worker_id:
@@ -157,6 +156,11 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
         next_url = self.request.POST.get("next", "/")
         return next_url
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        return redirect(self.get_success_url())
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+
+    def get_success_url(self):
+        next_url = self.request.POST.get("next", "/")
+        return next_url
