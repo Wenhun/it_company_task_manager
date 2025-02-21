@@ -167,4 +167,3 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task_manager:task-list")
-

@@ -38,10 +38,10 @@
   <hr>
 
   <div class="w3-container">
-    <a href="{% url 'task_manager:task-delete' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-red">
+    <a href="{% url 'task_manager:task-delete' pk=task.pk %}" class="w3-button w3-red">
       Delete
     </a>
-    <a href="{% url 'task_manager:task-update' pk=task.pk %}" class="w3-button w3-blue">
+    <a href="{% url 'task_manager:task-update' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-blue">
       Update
     </a>
   </div>
