@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <header class="w3-container w3-green">
+  <div class="w3-container">
     <h1>
-      Projects
-    </h1>
-  </header>
+      <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">
+      Projects▼</button>
+      </h1>
+    <div id="project_links" class="w3-hide">
+      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:project-create' %}?next={{ request.path }}">Add new project</a>
+    </div>
+  </div>
+
   <hr>
   <table class="w3-table w3-striped w3-white" >
     {% for project in project_list %}
@@ -33,4 +38,7 @@
     No projects!
     {% endfor %}
   </table>
+
+    {% include 'includes/accordion_function.html' %}
+
 {% endblock %}

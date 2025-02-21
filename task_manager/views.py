@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.forms import TaskForm
+from task_manager.forms import TaskForm, ProjectForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -88,6 +88,25 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context["current_date"] = datetime.now().date()
         return context
+
+
+class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Project
+    form_class = ProjectForm
+
+
+class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Project
+    form_class = ProjectForm
+
+    def get_success_url(self):
+        return self.request.POST.get("next", "/")
+
+
+class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Project
+    success_url = reverse_lazy("task_manager:project-list")
+
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
