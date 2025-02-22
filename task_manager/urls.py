@@ -15,7 +15,10 @@ from task_manager.views import (index,
                                 WorkerDetailView,
                                 TeamListView,
                                 TeamDetailView,
-                                categories)
+                                categories,
+                                TaskTypeCreateView,
+                                TaskTypeUpdateView,
+                                TaskTypeDeleteView)
 
 app_name = "task_manager"
 
@@ -36,4 +39,7 @@ urlpatterns = [
     path("teams/", TeamListView.as_view(), name="team-list"),
     path("teams/<int:pk>/", TeamDetailView.as_view(), name="team-detail"),
     path("categories/", categories, name="categories"),
+    path("categories/task_type/create", TaskTypeCreateView.as_view(), name="categories-task-type-create"),
+    path("categories/task_type/<int:pk>/update", TaskTypeUpdateView.as_view(), name="categories-task-type-update"),
+    path("categories/task_type/<int:pk>/delete", TaskTypeDeleteView.as_view(), name="categories-task-type-delete"),
 ]

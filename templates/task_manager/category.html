@@ -9,13 +9,13 @@
   <hr>
 
   <div class="w3-container">
-    <h2>Task Types <a class="w3-button w3-green" href="#">Add new</a></h2>
+    <h2>Task Types <a class="w3-button w3-green" href="{% url 'task_manager:categories-task-type-create' %}">Add new</a></h2>
     <table class="w3-table w3-striped w3-white">
       {% for task_type in task_types %}
       <tr class="w3-hover-blue">
         <td>{{ task_type.name }}</td>
-        <td><a class="w3-button w3-blue" href="#">Update</a></td>
-        <td><a class="w3-button w3-red" href="#">Delete</a></td>
+        <td><a class="w3-button w3-blue" href="{% url 'task_manager:categories-task-type-update' pk=task_type.pk %}">Update</a></td>
+        <td><a class="w3-button w3-red" href="{% url 'task_manager:categories-task-type-delete' pk=task_type.pk %}">Delete</a></td>
       </tr>
       {% endfor %}
     </table>

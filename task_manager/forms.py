@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from task_manager.models import Task, Project
+from task_manager.models import Task, Project, TaskType
 
 
 class TaskForm(forms.ModelForm):
@@ -34,4 +34,13 @@ class ProjectForm(forms.ModelForm):
             "budget": forms.TextInput(attrs={"class": "w3-input w3-border"}),
             "deadline": forms.DateInput(attrs={"class": "w3-input w3-border"}),
             "status": forms.Select(attrs={"class": "w3-select w3-border"}),
+        }
+
+
+class TaskTypeForm(forms.ModelForm):
+    class Meta:
+        model = TaskType
+        fields = "__all__"
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w3-input w3-border"}),
         }
