@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm
+from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -202,4 +202,21 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
+    success_url = reverse_lazy("task_manager:categories")
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    form_class = PositionForm
+    success_url = reverse_lazy("task_manager:categories")
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    form_class = PositionForm
+    success_url = reverse_lazy("task_manager:categories")
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
     success_url = reverse_lazy("task_manager:categories")

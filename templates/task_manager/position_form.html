@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="w3-container w3-green">
+    <h1>{{ object|yesno:"Update,Create" }} position</h1>
+  </header>
+  <form class="w3-container" action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" class="w3-button w3-green">
+  </form>
+{% endblock %}
