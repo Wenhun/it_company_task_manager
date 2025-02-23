@@ -3,12 +3,13 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm, TeamForm
+from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm, TeamForm, SearchForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -74,8 +75,22 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("search_field", "")
         context["current_date"] = datetime.now().date()
+        context["search_form"] = SearchForm(
+            initial={"search_field": name}, field_name="name"
+        )
         return context
+
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Task.objects.all()
+        form = SearchForm(data=self.request.GET, field_name="name")
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["search_field"])
+
+        return queryset
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):

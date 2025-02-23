@@ -7,13 +7,19 @@
       Tasks▼</button>
       </h1>
     <div id="project_links" class="w3-hide">
-      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}">Add new task</a>
+      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}">Add new Task</a>
+      <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align" style="margin-left: 20px;">
+      Search▼</button>
+      <div id="search" class="w3-hide" style="margin-left: 40px;">
+        <form method="get" action="">
+          {{ search_form.as_p }}
+          <input class="w3-button w3-green" type="submit" value="🔍">
+        </form>
+        <hr>
+      </div>
     </div>
-    <hr>
-   {% include "includes/task_table.html" with tasks=task_list show_active=True show_overdue=True show_completed=True %}
+    {% include "includes/task_table.html" with tasks=task_list show_active=True show_overdue=True show_completed=True %}
   </div>
 
   {% include 'includes/accordion_function.html' %}
-
 {% endblock %}
-
