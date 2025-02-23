@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 from task_manager.models import Task, Project, TaskType, Position
 
@@ -52,4 +53,26 @@ class PositionForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "name": forms.TextInput(attrs={"class": "w3-input w3-border"}),
+        }
+
+
+class WorkerCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "position",
+            "team",
+            "is_team_lead"
+        )
+
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "w3-input w3-border"}),
+            "password": forms.PasswordInput(attrs={"class": "w3-password w3-border"}),
+            "first_name": forms.TextInput(attrs={"class": "w3-input w3-border"}),
+            "last_name": forms.TextInput(attrs={"class": "w3-input w3-border"}),
+            "position": forms.Select(attrs={"class": "w3-select w3-border"}),
+            "team": forms.Select(attrs={"class": "w3-select w3-border"}),
+            "is_team_lead": forms.CheckboxInput(attrs={"class": "w3-check w3-border"}),
         }

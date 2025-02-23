@@ -63,6 +63,15 @@
       </table>
     </div>
   </div>
+  <hr>
+  <div class="w3-container">
+    <a href="{% url 'task_manager:worker-update' pk=worker.pk %}" class="w3-button w3-blue">
+      Update
+    </a>
+    <a href="{% url 'task_manager:worker-delete' pk=worker.pk %}" class="w3-button w3-red">
+      Delete
+    </a>
+  </div>
 
   {% include 'includes/accordion_function.html' %}
 

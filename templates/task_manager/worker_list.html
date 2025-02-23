@@ -2,22 +2,27 @@
 {% load static %}
 
 {% block content %}
-  <header class="w3-container w3-green">
+  <div class="w3-container">
     <h1>
-      Workers
-    </h1>
-  </header>
-  <hr>
-  <table class="w3-table w3-striped w3-white" >
-    {% for worker in worker_list %}
-      <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:worker-detail' pk=worker.pk %}';" style="cursor: pointer;">
-        <td>{{ worker.username }}</td>
-        <td>{{ worker.first_name }}</td>
-        <td>{{ worker.last_name }}</td>
-        <td>{{ worker.team }}</td>
-      </tr>
-    {% empty %}
-    No workers!
-    {% endfor %}
-  </table>
+      <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">
+      Workers▼</button>
+      </h1>
+    <div id="project_links" class="w3-hide">
+      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:worker-create' %}?next={{ request.path }}">Add new worker</a>
+    </div>
+    <hr>
+    <table class="w3-table w3-striped w3-white" >
+      {% for worker in worker_list %}
+        <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:worker-detail' pk=worker.pk %}';" style="cursor: pointer;">
+          <td>{{ worker.username }}</td>
+          <td>{{ worker.first_name }}</td>
+          <td>{{ worker.last_name }}</td>
+          <td>{{ worker.team }}</td>
+        </tr>
+      {% empty %}
+      No workers!
+      {% endfor %}
+    </table>
+  </div>
+  {% include 'includes/accordion_function.html' %}
 {% endblock %}

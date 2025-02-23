@@ -5,10 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm
+from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -220,3 +220,27 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("task_manager:categories")
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = get_user_model()
+    form_class = WorkerCreationForm
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        worker = form.instance
+        self.success_url = reverse("task_manager:worker-detail", kwargs={'pk': worker.pk})
+        return response
+
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    form_class = WorkerCreationForm
+
+    def get_success_url(self):
+        return self.request.POST.get("next", "/")
+
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("task_manager:worker-list")
