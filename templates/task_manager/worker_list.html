@@ -9,8 +9,12 @@
       </h1>
     <div id="project_links" class="w3-hide">
       <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:worker-create' %}?next={{ request.path }}">Add new worker</a>
+      <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align" style="margin-left: 20px;">Search▼</button>
+      <div id="search" class="w3-hide" style="margin-left: 40px;">
+        {% include 'includes/search_form.html' %}
+      </div>
+      <br>
     </div>
-    <hr>
     <table class="w3-table w3-striped w3-white" >
       {% for worker in worker_list %}
         <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:worker-detail' pk=worker.pk %}';" style="cursor: pointer;">

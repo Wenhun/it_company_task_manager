@@ -130,6 +130,24 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     template_name = "task_manager/worker_list.html"
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.request.GET.get("search_field", "")
+        context["search_form"] = SearchForm(
+            initial={"search_field": username}, field_name="username"
+        )
+        return context
+
+
+    def get_queryset(self) -> QuerySet:
+        queryset = get_user_model().objects.all()
+        form = SearchForm(data=self.request.GET, field_name="username")
+        if form.is_valid():
+            return queryset.filter(
+                username__icontains=form.cleaned_data["search_field"])
+
+        return queryset
+
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
