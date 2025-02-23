@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm
+from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm, TeamForm
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
@@ -244,3 +244,20 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:worker-list")
+
+
+class TeamCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Team
+    form_class = TeamForm
+    success_url = reverse_lazy("task_manager:team-list")
+
+
+class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Team
+    form_class = TeamForm
+    success_url = reverse_lazy("task_manager:team-list")
+
+
+class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Team
+    success_url = reverse_lazy("task_manager:team-list")

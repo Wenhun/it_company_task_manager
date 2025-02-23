@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <header class="w3-container w3-green">
+  <div class="w3-container">
     <h1>
-      Teams
-    </h1>
-  </header>
-  <hr>
-  <table class="w3-table w3-striped w3-white" >
-    {% for team in team_list %}
-      <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:team-detail' pk=team.pk %}';" style="cursor: pointer;">
-        <td>{{ team.name }}</td>
-        <td>{{ team.project.project_name }}</td>
-        <td>{% for worker in team.workers.all %} {{ worker.username }}<br>{% endfor %}</td>
-      </tr>
-    {% empty %}
-    No teams!
-    {% endfor %}
-  </table>
+      <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">
+      Teams▼</button>
+      </h1>
+    <div id="project_links" class="w3-hide">
+      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:team-create' %}">Add new team</a>
+    </div>
+    <hr>
+    <table class="w3-table w3-striped w3-white" >
+      {% for team in team_list %}
+        <tr class="w3-hover-blue" onclick="location.href='{% url 'task_manager:team-detail' pk=team.pk %}';" style="cursor: pointer;">
+          <td>{{ team.name }}</td>
+          <td>{{ team.project.project_name }}</td>
+          <td>{% for worker in team.workers.all %} {{ worker.username }}<br>{% endfor %}</td>
+        </tr>
+      {% empty %}
+      No teams!
+      {% endfor %}
+    </table>
+  </div>
+  {% include 'includes/accordion_function.html' %}
 {% endblock %}
