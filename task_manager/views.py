@@ -87,6 +87,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         queryset = Task.objects.all()
         form = SearchForm(data=self.request.GET, field_name="name")
         if form.is_valid():
+            if self.request.GET.get("overdue") == "true":
+                queryset = queryset.filter(deadline__lt=datetime.now().date())
+
             return queryset.filter(
                 name__icontains=form.cleaned_data["search_field"])
 
