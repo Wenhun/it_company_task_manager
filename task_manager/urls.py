@@ -27,7 +27,8 @@ from task_manager.views import (index,
                                 TaskTypeDeleteView,
                                 PositionCreateView,
                                 PositionUpdateView,
-                                PositionDeleteView)
+                                PositionDeleteView,
+                                set_task_as_completed)
 
 app_name = "task_manager"
 
@@ -60,4 +61,5 @@ urlpatterns = [
     path("categories/position/create", PositionCreateView.as_view(), name="categories-position-create"),
     path("categories/position/<int:pk>/update", PositionUpdateView.as_view(), name="categories-position-update"),
     path("categories/position/<int:pk>/delete", PositionDeleteView.as_view(), name="categories-position-delete"),
+    path("categories/tasks/<int:pk>/set_task_as_completed", set_task_as_completed, name="set-task-as-completed"),
 ]

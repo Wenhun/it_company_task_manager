@@ -36,13 +36,16 @@
       {% include 'includes/team_list.html' with workers=task.assignees.all image_size=25 line_size="medium" empty_text="No more workers" %}
   </div>
   <hr>
-
   <div class="w3-container">
-    <a href="{% url 'task_manager:task-delete' pk=task.pk %}" class="w3-button w3-red">
-      Delete
-    </a>
-    <a href="{% url 'task_manager:task-update' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-blue">
-      Update
-    </a>
+    {% if not task.is_completed %}
+      <a href="{% url 'task_manager:set-task-as-completed' pk=task.pk %}" class="w3-button w3-green">Set task as completed!</a>
+    {% else %}
+      <a href="#" class="w3-button w3-gray" disabled="true">Task Already Completed</a>
+    {% endif %}
+  </div>
+  <hr>
+  <div class="w3-container">
+    <a href="{% url 'task_manager:task-update' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-blue">Update</a>
+    <a href="{% url 'task_manager:task-delete' pk=task.pk %}" class="w3-button w3-red">Delete</a>
   </div>
 {% endblock %}

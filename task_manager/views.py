@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -309,3 +309,11 @@ class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Team
     success_url = reverse_lazy("task_manager:team-list")
+
+
+@login_required
+def set_task_as_completed(request, pk):
+    task = Task.objects.get(pk=pk)
+    task.is_completed = True
+    task.save()
+    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
