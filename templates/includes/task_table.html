@@ -7,7 +7,7 @@
         {% if not task.is_completed and task.deadline >= current_date %}
           {% if show_active %}
             <tr class="w3-hover-blue" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" class="sidebar_image"></td>
                 <td>{{ task.name }}</td>
                 <td><i>Deadline: {{ task.deadline }}</i></td>
                 <td><i>Priority: {{ task.get_priority_display }}</i></td>
@@ -18,7 +18,7 @@
         {% elif not task.is_completed and task.deadline < current_date %}
           {% if show_overdue %}
             <tr class="w3-hover-red" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" class="sidebar_image"></td>
                 <td>{{ task.name }}</td>
                 <td><i>Deadline: {{ task.deadline }} <div style="color: red">OVERDUE!</div></i></td>
                 <td><i>Priority: {{ task.get_priority_display }}</i></td>
@@ -29,7 +29,7 @@
         {% elif task.is_completed %}
           {% if show_completed %}
             <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
+                <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" class="sidebar_image"></td>
                 <td>{{ task.name }}</td>
                 <td><i style="color: green">Completed!</i></td>
                 <td style="opacity: 0.0;"><i>Priority: {{ task.get_priority_display }}</i></td>

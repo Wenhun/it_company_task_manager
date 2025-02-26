@@ -1,15 +1,7 @@
-{% extends "base.html" %}
+{% include "includes/form.html" with model_name="task"%}
 
-{% block content %}
-  <header class="w3-container w3-green">
-    <h1>{{ object|yesno:"Update,Create" }} task</h1>
-  </header>
-  <form class="w3-container" action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
+{% block inputs %}
     <input type="hidden" name="next" value="{{ request.GET.next }}">
     <input type="hidden" name="worker_id" value="{{ request.GET.worker_id }}">
     <input type="hidden" name="project_id" value="{{ request.GET.project_id }}">
-    <input type="submit" value="Submit" class="w3-button w3-green">
-  </form>
 {% endblock %}

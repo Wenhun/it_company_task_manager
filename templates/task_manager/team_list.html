@@ -6,8 +6,8 @@
       <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">
       Teams▼</button>
       </h1>
-    <div id="project_links" class="w3-hide">
-      <a class="w3-button w3-block w3-left-align w3-green" style="margin-left: 20px;" href="{% url 'task_manager:team-create' %}">Add new team</a>
+    <div id="project_links" class="w3-hide accordion_filters">
+      <a class="w3-button w3-block w3-left-align w3-green" href="{% url 'task_manager:team-create' %}">Add new team</a>
     </div>
     <hr>
     <table class="w3-table w3-striped w3-white" >

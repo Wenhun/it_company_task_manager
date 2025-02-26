@@ -4,10 +4,9 @@
 {% block content %}
   <div class="w3-container">
     <h1>
-      <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">
-      Tasks▼</button>
+      <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">Tasks▼</button>
       </h1>
-      <div id="project_links" class="w3-hide" style="margin-left: 20px;">
+      <div id="project_links" class="w3-hide accordion_filters">
         <a class="w3-button w3-block w3-left-align w3-green" href="{% url 'task_manager:task-create' %}?next={{ request.path }}">Add new Task</a>
 
         {% if request.GET.overdue == "true" %}
@@ -24,7 +23,7 @@
 
         <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align">
         Search▼</button>
-        <div id="search" class="w3-hide" style="margin-left: 40px;">
+        <div id="search" class="w3-hide accordion_filters-double-margin">
           {% include 'includes/search_form.html' %}
         </div>
       <br>

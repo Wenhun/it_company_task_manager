@@ -9,7 +9,7 @@
   </header>
   <br>
   <div class="w3-container">
-    <img src="{% static 'images/project.svg' %}" alt="logout" style="width:18px;height:18px;">
+    <img src="{% static 'images/project.svg' %}" alt="logout" class="sidebar_image">
     <b>Current project: <a href="{% url 'task_manager:project-detail' pk=team.project.pk %}">{{ team.project.project_name }}</a></b>
   </div>
   <br>
