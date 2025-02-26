@@ -90,6 +90,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
             if self.request.GET.get("overdue") == "true":
                 queryset = queryset.filter(deadline__lt=datetime.now().date(), is_completed=False)
 
+            if self.request.GET.get("hide_completed") == "true":
+                queryset = queryset.filter(is_completed=False)
+
             return queryset.filter(
                 name__icontains=form.cleaned_data["search_field"])
 
