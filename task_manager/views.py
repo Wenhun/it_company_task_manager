@@ -1,4 +1,5 @@
 from datetime import datetime
+from itertools import count
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -177,8 +178,13 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         tasks = Task.objects.prefetch_related("assignees").filter(
             assignees=context["worker"].id
         )
-        context["not_completed_tasks"] = tasks.filter(is_completed=False)
-        context["completed_tasks"] = tasks.filter(is_completed=True)
+        context["num_all_tasks"] = tasks.count()
+        not_completed_tasks = tasks.filter(is_completed=False)
+        context["not_completed_tasks"] = not_completed_tasks
+        context["num_not_completed_tasks"] = not_completed_tasks.count()
+        completed_tasks = tasks.filter(is_completed=True)
+        context["completed_tasks"] = completed_tasks
+        context["num_completed_tasks"] = completed_tasks.count()
         return context
 
 

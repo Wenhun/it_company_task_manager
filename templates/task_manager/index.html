@@ -7,38 +7,7 @@
     <h5><b>My task statistic</b></h5>
   </header>
 
-  <div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-      <div class="w3-container w3-red w3-padding-16">
-        <div class="w3-left"><img src="{% static 'images/tasks_all.svg' %}" alt="tasks-all" style="width:56px;height:56px;"></div>
-        <div class="w3-right">
-          <h3>{{ tasks.all.count }}</h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>All tasks owned</h4>
-      </div>
-    </div>
-    <div class="w3-quarter">
-      <div class="w3-container w3-blue w3-padding-16">
-        <div class="w3-left"><img src="{% static 'images/tasks_progress.svg' %}" alt="tasks-progress" style="width:56px;height:56px;"></div>
-        <div class="w3-right">
-          <h3>{{ num_not_completed_tasks }}</h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Tasks in progress</h4>
-      </div>
-    </div>
-    <div class="w3-quarter">
-      <div class="w3-container w3-teal w3-padding-16">
-        <div class="w3-left"><img src="{% static 'images/tasks-completed.svg' %}" alt="tasks-completed" style="width:56px;height:56px;"></div>
-        <div class="w3-right">
-          <h3>{{ num_completed_tasks }}</h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Completed tasks</h4>
-      </div>
-    </div>
-  </div>
+  {% include 'includes/statistic_blocks.html' with num_all_tasks=tasks.all.count %}
 
   <div class="w3-container">
 
