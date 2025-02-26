@@ -61,7 +61,9 @@
     <h3>Teams:</h3>
     <ul>
       {% for team in  project.teams.all %}
-        <li><i class="fa fa-users fa-fw"></i> {{ team }}</li>
+        <li>
+          <a href="{% url 'task_manager:team-detail' pk=team.pk %}"><i class="fa fa-users fa-fw"></i> {{ team }}</a>
+        </li>
       {% endfor %}
     </ul>
   </div>
