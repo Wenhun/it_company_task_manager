@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-  <header>
+  <header class="w3-container w3-green">
     <h1>
       {{ team.name }}
     </h1>
   </header>
-
+  <br>
   <div class="w3-container">
-    <h3>Team Detail:</h3>
-    <h4>Current project: <a href="{% url 'task_manager:project-detail' pk=team.project.pk %}">{{ team.project.project_name }}</a></h4>
+    <img src="{% static 'images/project.svg' %}" alt="logout" style="width:18px;height:18px;">
+    <b>Current project: <a href="{% url 'task_manager:project-detail' pk=team.project.pk %}">{{ team.project.project_name }}</a></b>
   </div>
-
+  <br>
   {% if team.description %}
     <div class="w3-panel w3-pale-green w3-border w3-round" style="padding: 10px; margin: 10px">{{ team.description }}</div>
   {% endif %}
