@@ -18,7 +18,7 @@
       {% endif %}
     </h1>
   </header>
-    {% if is_overdue %}
+    {% if is_overdue and not task.is_completed%}
       <h1 class="w3-panel w3-red" >the task is {{ days_difference }} days overdue.</h1>
     {% endif %}
   <div class="w3-container">
