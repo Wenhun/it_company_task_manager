@@ -14,12 +14,12 @@
           <a class="w3-button w3-block w3-left-align w3-green" href="?">Show all Tasks</a>
         {% else %}
           <a class="w3-button w3-block w3-left-align w3-red" href="?{% query_transform request overdue="true" %}">Show only overdue Tasks</a>
-        {% endif %}
 
-        {% if request.GET.hide_completed == "true" %}
-          <a class="w3-button w3-block w3-left-align w3-green" href="?{% query_transform request hide_completed="false" %}">Show completed tasks</a>
-        {% else %}
-          <a class="w3-button w3-block w3-left-align w3-blue" href="?{% query_transform request hide_completed="true" %}">Hide completed tasks</a>
+          {% if request.GET.hide_completed == "true" %}
+            <a class="w3-button w3-block w3-left-align w3-green" href="?{% query_transform request hide_completed="false" %}">Show completed tasks</a>
+          {% else %}
+            <a class="w3-button w3-block w3-left-align w3-blue" href="?{% query_transform request hide_completed="true" %}">Hide completed tasks</a>
+          {% endif %}
         {% endif %}
 
         <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align">
