@@ -37,7 +37,7 @@ class PrivateAccessTests(TestCase):
         team = Team.objects.create(name="test_team")
         is_team_lead = True
 
-        self.user  = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_user(
             username=username,
             password=password,
             position=self.position,
@@ -66,20 +66,22 @@ class PrivateAccessTests(TestCase):
     def test_retrieve_tasks(self):
         task_type = TaskType.objects.create(name="test")
 
-        task_1 = Task.objects.create(name="test_1",
-                                   description="test description",
-                                   deadline="2025-01-01",
-                                   is_completed=True,
-                                   priority=1,
-                                   task_type=task_type)
+        task_1 = Task.objects.create(
+            name="test_1",
+            description="test description",
+            deadline="2025-01-01",
+            is_completed=True,
+            priority=1,
+            task_type=task_type)
         task_1.assignees.set([self.user])
 
-        task_2 = Task.objects.create(name="test_2",
-                                   description="test description",
-                                   deadline="2025-01-01",
-                                   is_completed=True,
-                                   priority=1,
-                                   task_type=task_type)
+        task_2 = Task.objects.create(
+            name="test_2",
+            description="test description",
+            deadline="2025-01-01",
+            is_completed=True,
+            priority=1,
+            task_type=task_type)
         task_2.assignees.set([self.user])
 
         response = self.client.get(TASK_LIST_URL)
@@ -92,9 +94,10 @@ class PrivateAccessTests(TestCase):
         self.assertTemplateUsed(response, "task_manager/task_list.html")
 
     def test_retrieve_team(self):
-        project = Project.objects.create(project_name="test2",
-                               deadline="2025-01-01",
-                               status="Active")
+        project = Project.objects.create(
+            project_name="test2",
+            deadline="2025-01-01",
+            status="Active")
 
         Team.objects.create(name="test_1", project=project)
         Team.objects.create(name="test_2", project=project)
@@ -141,7 +144,7 @@ class CreateTest(TestCase):
         team = Team.objects.create(name="test_team")
         is_team_lead = True
 
-        self.user  = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_user(
             username=username,
             password=password,
             position=self.position,
@@ -163,7 +166,8 @@ class CreateTest(TestCase):
             "is_team_lead": True
         }
 
-        response = self.client.post(reverse("task_manager:worker-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:worker-create"), data=form_data)
         print(response.status_code)
         print(response.content)
         new_user = get_user_model().objects.get(username=form_data["username"])
@@ -179,7 +183,7 @@ class SetTaskAsCompletedTest(TestCase):
         password = "test123"
         self.position = Position.objects.create(name="test_position")
 
-        self.user  = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_user(
             username=username,
             password=password,
             position=self.position,
@@ -202,8 +206,8 @@ class SetTaskAsCompletedTest(TestCase):
         self.url = reverse("task_manager:task-detail", args=[self.task.pk])
 
     def test_setup_task_as_completed(self):
-        response = self.client.post(reverse("task_manager:set-task-as-completed",
-                                            args=[self.task.pk]))
+        response = self.client.post(
+            reverse("task_manager:set-task-as-completed", args=[self.task.pk]))
         self.task.refresh_from_db()
         self.assertEqual(self.task.is_completed, True)
         self.assertRedirects(response, self.url)
