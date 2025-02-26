@@ -68,14 +68,25 @@
 
   <h3 class="w3-container w3-cell">All tasks:</h3>
   <a class="w3-button w3-cell w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}&project_id={{ project.id }}">Add new task</a>
-
+  <br>
   <div class="w3-container">
-    <h4>Active:</h4>
-    {% include "includes/task_table.html" with tasks=project.tasks.all show_active=True show_overdue=True show_completed=False %}
+    <button
+      onclick="accordion_function('active_tasks')"
+      class="w3-button w3-block w3-left-align w3-blue">
+    Active tasks..
+    </button>
+    <div id="active_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=project.tasks.all show_active=True show_overdue=True show_completed=False %}
+    </div>
 
-    <h4>Completed:</h4>
-    {% include "includes/task_table.html" with tasks=project.tasks.all show_active=False show_overdue=False show_completed=True %}
-
+    <button
+      onclick="accordion_function('completed_tasks')"
+      class="w3-button w3-block w3-left-align w3-green">
+    Completed tasks...
+    </button>
+    <div id="completed_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=project.tasks.all show_active=False show_overdue=False show_completed=True %}
+    </div>
   <hr>
 
   <div class="w3-container">
@@ -87,4 +98,6 @@
     </a>
   </div>
 </div>
+
+  {% include 'includes/accordion_function.html' %}
 {% endblock %}
