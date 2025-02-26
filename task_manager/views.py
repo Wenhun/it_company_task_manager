@@ -28,6 +28,8 @@ def index(request: HttpRequest) -> HttpResponse:
         .exclude(id=current_user_id)
     )
     current_date = datetime.now().date()
+    project_tasks = Task.objects.filter(project=project)
+    percentage_complete_project = round(project_tasks.filter(is_completed=True).count() / project_tasks.filter(is_completed=False).count() * 100, 2)
 
     context = {
         "tasks": tasks,
@@ -36,6 +38,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_not_completed_tasks": num_not_completed_tasks,
         "team_workers": team_workers,
         "current_date": current_date,
+        "percentage_complete_project": percentage_complete_project
     }
 
     return render(request, "task_manager/index.html", context=context)
