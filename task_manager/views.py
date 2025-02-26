@@ -1,24 +1,34 @@
 from datetime import datetime
-from itertools import count
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from task_manager.forms import TaskForm, ProjectForm, TaskTypeForm, PositionForm, WorkerCreationForm, TeamForm, SearchForm
-from task_manager.models import Task, Project, Team, TaskType, Position
+from task_manager.forms import (TaskForm,
+                                ProjectForm,
+                                TaskTypeForm,
+                                PositionForm,
+                                WorkerCreationForm,
+                                TeamForm,
+                                SearchForm)
+from task_manager.models import (Task,
+                                 Project,
+                                 Team,
+                                 TaskType,
+                                 Position)
 
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
     """View function for the home page of the site."""
     current_user_id = request.user.id
-    tasks = Task.objects.prefetch_related("assignees").filter(assignees=current_user_id)
+    tasks = Task.objects.prefetch_related(
+        "assignees").filter(assignees=current_user_id)
     project = get_user_model().objects.get(pk=current_user_id).team.project
     num_completed_tasks = tasks.filter(is_completed=True).count()
     num_not_completed_tasks = tasks.filter(is_completed=False).count()
@@ -29,7 +39,9 @@ def index(request: HttpRequest) -> HttpResponse:
     )
     current_date = datetime.now().date()
     project_tasks = Task.objects.filter(project=project)
-    percentage_complete_project = round(project_tasks.filter(is_completed=True).count() / project_tasks.filter(is_completed=False).count() * 100, 2)
+    percentage_complete_project = round(
+        project_tasks.filter(is_completed=True).count()
+        / project_tasks.filter(is_completed=False).count() * 100, 2)
 
     context = {
         "tasks": tasks,
@@ -86,13 +98,13 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         )
         return context
 
-
     def get_queryset(self) -> QuerySet:
         queryset = Task.objects.all()
         form = SearchForm(data=self.request.GET, field_name="name")
         if form.is_valid():
             if self.request.GET.get("overdue") == "true":
-                queryset = queryset.filter(deadline__lt=datetime.now().date(), is_completed=False)
+                queryset = queryset.filter(deadline__lt=datetime.now().date(),
+                                           is_completed=False)
 
             if self.request.GET.get("hide_completed") == "true":
                 queryset = queryset.filter(is_completed=False)
@@ -160,7 +172,6 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         )
         return context
 
-
     def get_queryset(self) -> QuerySet:
         queryset = get_user_model().objects.all()
         form = SearchForm(data=self.request.GET, field_name="username")
@@ -173,7 +184,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
-    queryset = get_user_model().objects.all().prefetch_related("tasks__task_type")
+    queryset = get_user_model().objects.all().prefetch_related(
+        "tasks__task_type")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -212,7 +224,9 @@ def categories(request: HttpRequest) -> HttpResponse:
         "positions": positions,
     }
 
-    return render(request, "task_manager/category.html", context=context)
+    return render(request,
+                  "task_manager/category.html",
+                  context=context)
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
@@ -291,7 +305,8 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         worker = form.instance
-        self.success_url = reverse("task_manager:worker-detail", kwargs={'pk': worker.pk})
+        self.success_url = reverse("task_manager:worker-detail",
+                                   kwargs={'pk': worker.pk})
         return response
 
 
@@ -330,4 +345,5 @@ def set_task_as_completed(request, pk):
     task = Task.objects.get(pk=pk)
     task.is_completed = True
     task.save()
-    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
+    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail",
+                                             args=[pk]))
