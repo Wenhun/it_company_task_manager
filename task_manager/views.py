@@ -174,9 +174,11 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["current_date"] = datetime.now().date()
-        context["tasks"] = Task.objects.prefetch_related("assignees").filter(
+        tasks = Task.objects.prefetch_related("assignees").filter(
             assignees=context["worker"].id
         )
+        context["not_completed_tasks"] = tasks.filter(is_completed=False)
+        context["completed_tasks"] = tasks.filter(is_completed=True)
         return context
 
 
