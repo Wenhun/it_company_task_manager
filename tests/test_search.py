@@ -10,7 +10,7 @@ FIRST_SEARCH_LETTER = "J"
 TEST_PASSWORD = "test123"
 
 
-class UniqueSearchTest:
+class SearchTests:
     model: TestCase
     object_1: str
     object_2: str
@@ -69,7 +69,7 @@ class UniqueSearchTest:
         self.model.assertNotContains(response, self.object_3)
 
 
-class WorkerSearchTests(TestCase, UniqueSearchTest):
+class WorkerSearchTests(TestCase, SearchTests):
     def setUp(self) -> None:
         user = self.create_user()
         self.client.force_login(user)
@@ -94,7 +94,7 @@ class WorkerSearchTests(TestCase, UniqueSearchTest):
         self.url = reverse("task_manager:worker-list")
 
 
-class TaskSearchTests(TestCase, UniqueSearchTest):
+class TaskSearchTests(TestCase, SearchTests):
     def setUp(self) -> None:
         user = self.create_user()
         self.client.force_login(user)
@@ -140,7 +140,7 @@ class TaskSearchTests(TestCase, UniqueSearchTest):
         self.url = reverse("task_manager:task-list")
 
 
-class ProjectSearchTests(TestCase, UniqueSearchTest):
+class ProjectSearchTests(TestCase, SearchTests):
     def setUp(self) -> None:
         user = self.create_user()
         self.client.force_login(user)

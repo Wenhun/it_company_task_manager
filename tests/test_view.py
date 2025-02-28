@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.forms import forms
 from django.test import TestCase
 from django.urls import reverse
 
+from task_manager.forms import TaskForm
 from task_manager.models import Project, Task, Team, Position, TaskType
 
 
@@ -144,6 +146,11 @@ class CreateTest(TestCase):
         team = Team.objects.create(name="test_team")
         is_team_lead = True
 
+        self.project = Project.objects.create(
+            project_name="test",
+            deadline="2025-01-01",
+            status="Active")
+
         self.user = get_user_model().objects.create_user(
             username=username,
             password=password,
@@ -175,6 +182,30 @@ class CreateTest(TestCase):
         self.assertEqual(new_user.first_name, form_data["first_name"])
         self.assertEqual(new_user.last_name, form_data["last_name"])
         self.assertEqual(new_user.position.pk, form_data["position"])
+
+
+    def test_task_create_from_worker_page_with_worker(self):
+        url = reverse("task_manager:task-create")
+        response = self.client.get(url, {"worker_id": self.user.id})
+
+        print(response.context)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("form", response.context)
+        form = response.context["form"]
+        self.assertIsInstance(form, TaskForm)
+        self.assertEqual(list(form.initial.get("assignees", [])), [self.user])
+
+
+    def test_task_create_from_project_page_with_project(self):
+        url = reverse("task_manager:task-create")
+        response = self.client.get(url, {"project_id": self.project.id})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("form", response.context)
+        form = response.context["form"]
+        self.assertIsInstance(form, TaskForm)
+        self.assertEqual(form.initial.get("project"), self.project)
 
 
 class SetTaskAsCompletedTest(TestCase):
