@@ -2,9 +2,10 @@
   <td>{{ project.project_name }}</td>
   <td>
     <i>
-      {{ content }}
       {% if is_active %}
-        {{ project.deadline }}
+        Deadline: {{ project.deadline }} {{ content }}
+      {% else %}
+        {{ content }}
       {% endif %}
     </i>
   </td>

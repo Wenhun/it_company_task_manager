@@ -20,7 +20,7 @@
             <tr class="w3-hover-red" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
                 <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" class="sidebar_image"></td>
                 <td>{{ task.name }}</td>
-                <td><i>Deadline: {{ task.deadline }} <div style="color: red">OVERDUE!</div></i></td>
+                <td><i>Deadline: {{ task.deadline }} <span class="w3-text-red">OVERDUE!</span></i></td>
                 <td><i>Priority: {{ task.get_priority_display }}</i></td>
                 <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
             </tr>
@@ -31,7 +31,7 @@
             <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
                 <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" class="sidebar_image"></td>
                 <td>{{ task.name }}</td>
-                <td><i style="color: green">Completed!</i></td>
+                <td><i class="w3-text-green">Completed!</i></td>
                 <td style="opacity: 0.0;"><i>Priority: {{ task.get_priority_display }}</i></td>
                 <td><i>Workers: {% for assign in task.assignees.all %} {{ assign.username }}{% endfor %}</i></td>
             </tr>
