@@ -1,43 +1,34 @@
 from django.urls import path
 
-from task_manager.views.task_view import (
-    TaskDetailView,
-    TaskListView,
-    TaskCreateView,
-    TaskUpdateView,
-    TaskDeleteView,
-    set_task_as_completed)
-
-from task_manager.views.project_view import (
-    ProjectDetailView,
-    ProjectListView,
-    ProjectUpdateView,
-    ProjectCreateView,
-    ProjectDeleteView)
-
-from task_manager.views.worker_view import (
-    WorkerDetailView,
-    WorkerListView,
-    WorkerCreateView,
-    WorkerUpdateView,
-    WorkerDeleteView)
-
-from task_manager.views.team_view import (
-    TeamDetailView,
-    TeamListView,
-    TeamCreateView,
-    TeamUpdateView,
-    TeamDeleteView)
-
-from task_manager.views.views import (
-    index,
-    categories,
-    TaskTypeCreateView,
-    TaskTypeUpdateView,
-    TaskTypeDeleteView,
-    PositionCreateView,
-    PositionUpdateView,
-    PositionDeleteView)
+from task_manager.views import (index,
+                                TaskDetailView,
+                                TaskListView,
+                                TaskCreateView,
+                                TaskUpdateView,
+                                TaskDeleteView,
+                                ProjectDetailView,
+                                ProjectListView,
+                                ProjectCreateView,
+                                ProjectUpdateView,
+                                ProjectDeleteView,
+                                WorkerListView,
+                                WorkerDetailView,
+                                WorkerCreateView,
+                                WorkerUpdateView,
+                                WorkerDeleteView,
+                                TeamListView,
+                                TeamDetailView,
+                                TeamCreateView,
+                                TeamUpdateView,
+                                TeamDeleteView,
+                                categories,
+                                TaskTypeCreateView,
+                                TaskTypeUpdateView,
+                                TaskTypeDeleteView,
+                                PositionCreateView,
+                                PositionUpdateView,
+                                PositionDeleteView,
+                                set_task_as_completed)
 
 app_name = "task_manager"
 
