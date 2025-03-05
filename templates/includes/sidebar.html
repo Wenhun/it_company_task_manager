@@ -5,7 +5,12 @@
       {% if user.is_authenticated %}
         <span>Welcome, <strong>{{ user.get_username }}</strong></span><br>
         <a href="{% url 'task_manager:worker-detail' pk=user.pk %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-        <a href="{% url 'logout' %}" class="w3-bar-item w3-button"><img src="{% static 'images/logout.svg' %}" alt="logout" style="width:18px;height:18px;"></a>
+        <form  method="post" action="{% url 'admin:logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="w3-bar-item w3-button" >
+            <img src="{% static 'images/logout.svg' %}" alt="logout" style="width:18px;height:18px;">
+          </button>
+        </form>
       {% else %}
         <span><strong>Please, login</strong></span><br>
          <a href="{% url 'login' %}" class="w3-bar-item w3-button"><img src="{% static 'images/login.svg' %}" alt="login" style="width:18px;height:18px;"></a>
