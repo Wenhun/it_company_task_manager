@@ -38,30 +38,34 @@ class Task(models.Model):
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
     priority = models.IntegerField(
-        choices=PriorityChoices.choices,
-        default=PriorityChoices.MEDIUM
+        choices=PriorityChoices.choices, default=PriorityChoices.MEDIUM
     )
-    task_type = models.ForeignKey(TaskType,
-                                  on_delete=models.CASCADE,
-                                  related_name="tasks")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                       related_name="tasks")
-    project = models.ForeignKey("Project",
-                                null=True,
-                                blank=True,
-                                on_delete=models.CASCADE,
-                                related_name="tasks")
+    task_type = models.ForeignKey(
+        TaskType, on_delete=models.CASCADE, related_name="tasks"
+    )
+    assignees = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="tasks")
+    project = models.ForeignKey(
+        "Project",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="tasks"
+    )
 
-    def __str__(self):
+    def __str__(self) -> str:
         workers = ", ".join([str(worker) for worker in self.assignees.all()])
 
         if self.is_completed:
             return f"{self.name}: Completed! Workers: {workers}"
         else:
-            return (f"{self.name}: Not Completed! "
-                    f"Priority: {self.priority}, "
-                    f"Deadline={self.deadline}, "
-                    f"Workers: {workers}")
+            return (
+                f"{self.name}: Not Completed! "
+                f"Priority: {self.priority}, "
+                f"Deadline={self.deadline}, "
+                f"Workers: {workers}"
+            )
 
 
 class Project(models.Model):
@@ -73,10 +77,8 @@ class Project(models.Model):
 
     project_name = models.CharField(max_length=255)
     deadline = models.DateField()
-    budget = models.DecimalField(max_digits=12,
-                                 decimal_places=2,
-                                 null=True,
-                                 blank=True)
+    budget = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True)
     status = models.CharField(
         max_length=10,
         choices=StatusChoices.choices,
@@ -87,17 +89,19 @@ class Project(models.Model):
     def __str__(self) -> str:
         return f"{self.project_name}, status: {self.status}"
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("task_manager:project-detail", kwargs={"pk": self.pk})
 
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
-    project = models.ForeignKey(Project,
-                                on_delete=models.SET_NULL,
-                                null=True,
-                                blank=True,
-                                related_name="teams")
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="teams"
+    )
     description = models.TextField(blank=True, null=True)
 
     def __str__(self) -> str:
@@ -105,24 +109,27 @@ class Team(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position,
-                                 on_delete=models.CASCADE,
-                                 related_name="workers")
-    team = models.ForeignKey(Team,
-                             on_delete=models.SET_NULL,
-                             null=True,
-                             blank=True,
-                             related_name="workers")
+    position = models.ForeignKey(
+        Position, on_delete=models.CASCADE, related_name="workers"
+    )
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name="workers"
+    )
     is_team_lead = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'Worker'
-        verbose_name_plural = 'Workers'
+        verbose_name = "Worker"
+        verbose_name_plural = "Workers"
 
     def __str__(self) -> str:
-        return (f"{self.username}: "
-                f"({self.first_name} {self.last_name})"
-                f"Position: {self.position.name}")
+        return (
+            f"{self.username}: "
+            f"({self.first_name} {self.last_name})"
+            f"Position: {self.position.name}"
+        )
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("task_manager:worker-detail", kwargs={"pk": self.pk})

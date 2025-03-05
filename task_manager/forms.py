@@ -20,7 +20,8 @@ class TaskForm(forms.ModelForm):
             "priority",
             "assignees",
             "task_type",
-            "project"]
+            "project",
+        ]
         widgets = {
             "name":
                 forms.TextInput(attrs={"class": "w3-input w3-border"}),
@@ -85,7 +86,7 @@ class WorkerCreationForm(UserCreationForm):
             "last_name",
             "position",
             "team",
-            "is_team_lead"
+            "is_team_lead",
         )
 
         widgets = {
@@ -123,13 +124,13 @@ class TeamForm(forms.ModelForm):
 class SearchForm(forms.Form):
     def __init__(self, field_name: str, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.fields[
-            "search_field"].widget.attrs[
-            "placeholder"] = f"Search by {field_name}"
+        self.fields["search_field"].widget.attrs[
+            "placeholder"
+        ] = f"Search by {field_name}"
 
     search_field = forms.CharField(
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"class": "w3-input w3-border"})
+        widget=forms.TextInput(attrs={"class": "w3-input w3-border"}),
     )

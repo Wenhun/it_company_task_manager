@@ -24,7 +24,7 @@ class AdminSiteTests(TestCase):
             is_team_lead=False
         )
 
-    def test_worker_custom_fields_listed(self):
+    def test_worker_custom_fields_listed(self) -> None:
         url = reverse("admin:task_manager_worker_changelist")
         res = self.client.get(url)
 
@@ -32,8 +32,9 @@ class AdminSiteTests(TestCase):
         self.assertContains(res, self.worker.team)
         self.assertContains(res, self.worker.is_team_lead)
 
-    def test_worker_detail_custom_fields_listed(self):
-        url = reverse("admin:task_manager_worker_change", args=[self.worker.id])
+    def test_worker_detail_custom_fields_listed(self) -> None:
+        url = reverse("admin:task_manager_worker_change",
+                      args=[self.worker.id])
         res = self.client.get(url)
 
         self.assertContains(res, self.worker.position)

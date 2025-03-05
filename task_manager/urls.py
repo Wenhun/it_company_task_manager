@@ -1,54 +1,44 @@
 from django.urls import path
 
-from task_manager.views import (index,
-                                TaskDetailView,
-                                TaskListView,
-                                TaskCreateView,
-                                TaskUpdateView,
-                                TaskDeleteView,
-                                ProjectDetailView,
-                                ProjectListView,
-                                ProjectCreateView,
-                                ProjectUpdateView,
-                                ProjectDeleteView,
-                                WorkerListView,
-                                WorkerDetailView,
-                                WorkerCreateView,
-                                WorkerUpdateView,
-                                WorkerDeleteView,
-                                TeamListView,
-                                TeamDetailView,
-                                TeamCreateView,
-                                TeamUpdateView,
-                                TeamDeleteView,
-                                categories,
-                                TaskTypeCreateView,
-                                TaskTypeUpdateView,
-                                TaskTypeDeleteView,
-                                PositionCreateView,
-                                PositionUpdateView,
-                                PositionDeleteView,
-                                set_task_as_completed)
+from task_manager.views import (
+    index,
+    TaskDetailView,
+    TaskListView,
+    TaskCreateView,
+    TaskUpdateView,
+    TaskDeleteView,
+    ProjectDetailView,
+    ProjectListView,
+    ProjectCreateView,
+    ProjectUpdateView,
+    ProjectDeleteView,
+    WorkerListView,
+    WorkerDetailView,
+    WorkerCreateView,
+    WorkerUpdateView,
+    WorkerDeleteView,
+    TeamListView,
+    TeamDetailView,
+    TeamCreateView,
+    TeamUpdateView,
+    TeamDeleteView,
+    categories,
+    TaskTypeCreateView,
+    TaskTypeUpdateView,
+    TaskTypeDeleteView,
+    PositionCreateView,
+    PositionUpdateView,
+    PositionDeleteView,
+    set_task_as_completed,
+)
 
 app_name = "task_manager"
 
 urlpatterns = [
-    path(
-        "",
-        index,
-        name="index"),
-    path(
-        "tasks/<int:pk>/",
-        TaskDetailView.as_view(),
-        name="task-detail"),
-    path(
-        "tasks/",
-        TaskListView.as_view(),
-        name="task-list"),
-    path(
-        "tasks/create",
-        TaskCreateView.as_view(),
-        name="task-create"),
+    path("", index, name="index"),
+    path("tasks/<int:pk>/", TaskDetailView.as_view(), name="task-detail"),
+    path("tasks/", TaskListView.as_view(), name="task-list"),
+    path("tasks/create", TaskCreateView.as_view(), name="task-create"),
     path(
         "tasks/<int:pk>/update/",
         TaskUpdateView.as_view(),
@@ -70,17 +60,17 @@ urlpatterns = [
         ProjectCreateView.as_view(),
         name="project-create"),
     path(
+
         "projects/<int:pk>/update",
         ProjectUpdateView.as_view(),
-        name="project-update"),
+        name="project-update"
+    ),
     path(
         "projects/<int:pk>/delete",
         ProjectDeleteView.as_view(),
-        name="project-delete"),
-    path(
-        "workers/",
-        WorkerListView.as_view(),
-        name="worker-list"),
+        name="project-delete"
+    ),
+    path("workers/", WorkerListView.as_view(), name="worker-list"),
     path(
         "workers/<int:pk>/",
         WorkerDetailView.as_view(),
@@ -117,36 +107,40 @@ urlpatterns = [
         "teams/<int:pk>/delete",
         TeamDeleteView.as_view(),
         name="team-delete"),
-    path(
-        "categories/",
-        categories,
-        name="categories"),
+    path("categories/", categories, name="categories"),
     path(
         "categories/task_type/create",
         TaskTypeCreateView.as_view(),
-        name="categories-task-type-create"),
+        name="categories-task-type-create",
+    ),
     path(
         "categories/task_type/<int:pk>/update",
         TaskTypeUpdateView.as_view(),
-        name="categories-task-type-update"),
+        name="categories-task-type-update",
+    ),
     path(
         "categories/task_type/<int:pk>/delete",
         TaskTypeDeleteView.as_view(),
-        name="categories-task-type-delete"),
+        name="categories-task-type-delete",
+    ),
     path(
         "categories/position/create",
         PositionCreateView.as_view(),
-        name="categories-position-create"),
+        name="categories-position-create",
+    ),
     path(
         "categories/position/<int:pk>/update",
         PositionUpdateView.as_view(),
-        name="categories-position-update"),
+        name="categories-position-update",
+    ),
     path(
         "categories/position/<int:pk>/delete",
         PositionDeleteView.as_view(),
-        name="categories-position-delete"),
+        name="categories-position-delete",
+    ),
     path(
         "categories/tasks/<int:pk>/set_task_as_completed",
         set_task_as_completed,
-        name="set-task-as-completed"),
+        name="set-task-as-completed",
+    ),
 ]

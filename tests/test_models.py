@@ -14,13 +14,12 @@ class ModelsTests(TestCase):
         self.assertEqual(str(task_type),
                          f"{task_type.name}")
 
-
     def test_task_type_ordering(self) -> None:
         task_type_last = TaskType.objects.create(name="c_test")
         task_type_middle = TaskType.objects.create(name="b_test")
         task_type_first = TaskType.objects.create(name="a_test")
 
-        list_task_type= [task_type_first, task_type_middle, task_type_last]
+        list_task_type = [task_type_first, task_type_middle, task_type_last]
         self.assertEqual(list_task_type,
                          list(TaskType.objects.all()))
 
@@ -34,7 +33,7 @@ class ModelsTests(TestCase):
         position_middle = Position.objects.create(name="b_test")
         position_first = Position.objects.create(name="a_test")
 
-        list_positions= [position_first, position_middle, position_last]
+        list_positions = [position_first, position_middle, position_last]
         self.assertEqual(list_positions,
                          list(Position.objects.all()))
 
@@ -51,7 +50,7 @@ class ModelsTests(TestCase):
                                    description="test description",
                                    deadline="2025-01-01",
                                    is_completed=True,
-                                   priority="High",
+                                   priority=1,
                                    task_type=task_type)
 
         task.assignees.set([assign])
@@ -63,20 +62,20 @@ class ModelsTests(TestCase):
 
         task.is_completed = False
 
-        self.assertEqual(str(task),
-                         f"{task.name}: Not Completed! "
-                        f"Priority: {task.priority}, "
-                        f"Deadline={task.deadline}, "
-                        f"Workers: {workers}")
+        self.assertEqual(
+            str(task),
+            f"{task.name}: Not Completed! "
+            f"Priority: {task.priority}, "
+            f"Deadline={task.deadline}, "
+            f"Workers: {workers}")
 
     def test_project_str(self) -> None:
         project = Project.objects.create(project_name="test",
                                          deadline="2025-01-01",
-                                         status = "Active")
+                                         status="Active")
 
         self.assertEqual(str(project),
                          f"{project.project_name}, status: {project.status}")
-
 
     def test_team_str(self) -> None:
         team = Team.objects.create(name="test")
@@ -97,7 +96,6 @@ class ModelsTests(TestCase):
                          f"{worker.username}: "
                          f"({worker.first_name} {worker.last_name})"
                          f"Position: {worker.position.name}")
-
 
 
 class CustomFieldsTests(TestCase):

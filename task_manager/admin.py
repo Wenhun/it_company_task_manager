@@ -2,12 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from task_manager.models import (Worker,
-                                 Team,
-                                 Position,
-                                 TaskType,
-                                 Task,
-                                 Project)
+from task_manager.models import Worker, Team, Position, TaskType, Task, Project
 
 
 admin.site.unregister(Group)
@@ -15,13 +10,24 @@ admin.site.unregister(Group)
 
 @admin.register(Worker)
 class WorkerAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ("position",
-                                             "team",
-                                             "is_team_lead",)
+    list_display = UserAdmin.list_display + (
+        "position",
+        "team",
+        "is_team_lead",
+    )
     fieldsets = UserAdmin.fieldsets + (
-        (("Additional info", {"fields": ("position",
-                                         "team",
-                                         "is_team_lead",)}),)
+        (
+            (
+                "Additional info",
+                {
+                    "fields": (
+                        "position",
+                        "team",
+                        "is_team_lead",
+                    )
+                },
+            ),
+        )
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         (
