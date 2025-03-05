@@ -145,6 +145,13 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         queryset = Project.objects.all()
         form = SearchForm(data=self.request.GET, field_name="project_name")
         if form.is_valid():
+            if self.request.GET.get("overdue") == "true":
+                queryset = queryset.filter(deadline__lt=datetime.now().date(),
+                                           status="Active")
+
+            if self.request.GET.get("active") == "true":
+                queryset = queryset.filter(status="Active")
+
             return queryset.filter(
                 project_name__icontains=form.cleaned_data["search_field"])
 

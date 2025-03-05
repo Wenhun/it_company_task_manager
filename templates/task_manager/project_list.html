@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load query_transform %}
 
 {% block content %}
   <div class="w3-container">
@@ -6,11 +7,31 @@
       <button onclick="accordion_function('project_links')" class="w3-button w3-block w3-green w3-left-align">Projects▼</button>
     </h1>
     <div id="project_links" class="w3-hide accordion_filters">
-      <a class="w3-button w3-block w3-left-align w3-green" href="{% url 'task_manager:worker-create' %}?next={{ request.path }}">Add new worker</a>
+      <a class="w3-button w3-block w3-left-align w3-green" href="{% url 'task_manager:project-create' %}?next={{ request.path }}">Add new project </a>
+
+      {% if request.GET.overdue == "true" and request.GET.active == "true" %}
+        <a class="w3-button w3-block w3-left-align w3-green" href="?">Show all Projects</a>
+      {% else %}
+        {% if request.GET.overdue == "true" %}
+          <a class="w3-button w3-block w3-left-align w3-green" href="?">Show all Projects</a>
+        {% else %}
+          <a class="w3-button w3-block w3-left-align w3-red" href="?{% query_transform request overdue="true" %}">Show only overdue Projects</a>
+        {% endif %}
+
+        {% if request.GET.active == "true" %}
+          {% if "overdue" not in request.GET %}
+            <a class="w3-button w3-block w3-left-align w3-green" href="?">Show all Projects</a>
+          {% endif %}
+        {% else %}
+          <a class="w3-button w3-block w3-left-align w3-blue" href="?{% query_transform request active="true" %}">Show only active projects</a>
+        {% endif %}
+      {% endif %}
+
       <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align">Search▼</button>
       <div id="search" class="w3-hide accordion_filters-double-margin">
         {% include 'includes/search_form.html' %}
       </div>
+
       <br>
     </div>
     <table class="w3-table w3-striped w3-white" >
