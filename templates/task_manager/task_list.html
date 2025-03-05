@@ -21,6 +21,25 @@
           {% endif %}
         {% endif %}
 
+        <button onclick="accordion_function('filter')" class="w3-button w3-block w3-green w3-left-align">
+          Filter by Type▼
+        </button>
+        <div id="filter" class="w3-hide accordion_filters-double-margin">
+          <form method="get">
+            <ul class="w3-ul">
+              {% for task_type in task_types %}
+                <li>
+                  <label>
+                    <input class="w3-check" type="checkbox" name="{{ task_type }}" value="true" onchange="this.form.submit()"
+                    {% if task_type.name in request.GET %} checked="checked" {% endif %}>
+                    {{ task_type }}
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          </form>
+        </div>
+
         <button onclick="accordion_function('search')" class="w3-button w3-block w3-green w3-left-align">
         Search▼</button>
         <div id="search" class="w3-hide accordion_filters-double-margin">

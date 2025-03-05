@@ -1,9 +1,10 @@
 from datetime import datetime
 
+from blib2to3.pytree import type_repr
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -96,6 +97,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context["search_form"] = SearchForm(
             initial={"search_field": name}, field_name="name"
         )
+        context["task_types"] = TaskType.objects.all()
         return context
 
     def get_queryset(self) -> QuerySet:
@@ -108,6 +110,15 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
             if self.request.GET.get("hide_completed") == "true":
                 queryset = queryset.filter(is_completed=False)
+
+
+            type_filters = Q()
+            for task_type in TaskType.objects.all():
+                if self.request.GET.get(task_type.name) == "true":
+                    type_filters |= Q(task_type=task_type)
+
+            if type_filters:
+                queryset = queryset.filter(type_filters)
 
             return queryset.filter(
                 name__icontains=form.cleaned_data["search_field"])
