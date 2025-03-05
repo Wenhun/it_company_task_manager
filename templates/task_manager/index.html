@@ -26,10 +26,9 @@
       <br>
     </div>
     <br>
-    <h5 class="w3-cell">Current tasks</h5>
-    <p class="w3-cell" style="font-style: italic">(last 10...)</p>
+    <h5 class="w3-cell">Current tasks:</h5>
     <br>
-    {% include "includes/task_table.html" with tasks=tasks|slice:":10" show_active=True show_overdue=True show_completed=False %}
+    {% include "includes/task_table.html" with tasks=tasks show_active=True show_overdue=True show_completed=False %}
   </div>
 
   <div class="w3-container">
