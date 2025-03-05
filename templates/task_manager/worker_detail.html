@@ -53,18 +53,7 @@
     </button>
 
     <div id="completed_tasks" class="w3-hide w3-container">
-      <table class="w3-table w3-striped w3-white">
-        {% for task in completed_tasks %}
-            <tr class="w3-hover-green" onclick="location.href='{% url "task_manager:task-detail" pk=task.id %}';" style="cursor: pointer;">
-              <td><img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:18px;height:18px;"></td>
-              <td>{{ task.name }}</td>
-              <td><i style="color: green">Completed!</i></td>
-              <td><i>Project: {{ task.project.project_name }}</i></td>
-            </tr>
-          {% empty %}
-            <tr><td colspan="5">No Completed Tasks!</td></tr>
-        {% endfor %}
-      </table>
+      {% include "includes/task_table.html" with tasks=completed_tasks show_completed=True%}
     </div>
   </div>
   <hr>
