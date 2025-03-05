@@ -87,7 +87,7 @@
     Completed tasks...
     </button>
     <div id="completed_tasks" class="w3-hide w3-container">
-      {% include "includes/task_table.html" with tasks=project.tasks.all show_active=False show_overdue=False show_completed=True %}
+      {% include "includes/task_table.html" with tasks=completed_tasks show_completed=True %}
     </div>
   <hr>
 

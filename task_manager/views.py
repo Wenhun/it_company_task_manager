@@ -76,11 +76,12 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_date = datetime.now()
-        task = context["project"]
-        days_difference = (current_date.date() - task.deadline).days
+        project = context["project"]
+        days_difference = (current_date.date() - project.deadline).days
         context["days_difference"] = days_difference
         context["is_overdue"] = days_difference > 0
         context["current_date"] = current_date.date()
+        context["completed_tasks"] = project.tasks.filter(is_completed=True)
         return context
 
 
