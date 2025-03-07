@@ -8,7 +8,8 @@ from django.db.models import QuerySet, Q
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views import generic
+from django.views import generic, View
+from django.views.generic import TemplateView
 
 from task_manager.forms import (
     TaskForm,
@@ -22,40 +23,47 @@ from task_manager.forms import (
 from task_manager.models import Task, Project, Team, TaskType, Position
 
 
-@login_required
-def index(request: HttpRequest) -> HttpResponse:
-    """View function for the home page of the site."""
-    current_user_id = request.user.id
-    tasks = Task.objects.prefetch_related("assignees").filter(
-        assignees=current_user_id)
-    project = get_user_model().objects.get(pk=current_user_id).team.project
-    num_completed_tasks = tasks.filter(is_completed=True).count()
-    num_not_completed_tasks = tasks.filter(is_completed=False).count()
-    team_workers = (
-        get_user_model()
-        .objects.filter(team=request.user.team)
-        .exclude(id=current_user_id)
-    )
-    current_date = datetime.now().date()
-    project_tasks = Task.objects.filter(project=project)
-    percentage_complete_project = round(
-        project_tasks.filter(is_completed=True).count()
-        / project_tasks.filter(is_completed=False).count()
-        * 100,
-        2,
-    )
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = "task_manager/index.html"
 
-    context = {
-        "tasks": tasks,
-        "project": project,
-        "num_completed_tasks": num_completed_tasks,
-        "num_not_completed_tasks": num_not_completed_tasks,
-        "team_workers": team_workers,
-        "current_date": current_date,
-        "percentage_complete_project": percentage_complete_project,
-    }
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        current_user = self.request.user
+        current_user_id = current_user.id
 
-    return render(request, "task_manager/index.html", context=context)
+        tasks = Task.objects.prefetch_related("assignees").filter(assignees=current_user_id)
+        project = current_user.team.project
+        num_completed_tasks = tasks.filter(is_completed=True).count()
+        num_not_completed_tasks = tasks.filter(is_completed=False).count()
+        team_workers = (
+            get_user_model()
+            .objects.filter(team=current_user.team)
+            .exclude(id=current_user_id)
+        )
+        current_date = datetime.now().date()
+        project_tasks = Task.objects.filter(project=project)
+
+        percentage_complete_project = (
+            round(
+                project_tasks.filter(is_completed=True).count()
+                / project_tasks.filter(is_completed=False).count()
+                * 100,
+                2,
+            )
+            if project_tasks.exists() else 0
+        )
+
+        context.update({
+            "tasks": tasks,
+            "project": project,
+            "num_completed_tasks": num_completed_tasks,
+            "num_not_completed_tasks": num_not_completed_tasks,
+            "team_workers": team_workers,
+            "current_date": current_date,
+            "percentage_complete_project": percentage_complete_project,
+        })
+
+        return context
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -237,17 +245,17 @@ class TeamDetailView(LoginRequiredMixin, generic.DetailView):
     model = Team
 
 
-@login_required
-def categories(request: HttpRequest) -> HttpResponse:
-    task_types = TaskType.objects.all()
-    positions = Position.objects.all()
+class CategoriesView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        task_types = TaskType.objects.all()
+        positions = Position.objects.all()
 
-    context = {
-        "task_types": task_types,
-        "positions": positions,
-    }
+        context = {
+            "task_types": task_types,
+            "positions": positions,
+        }
 
-    return render(request, "task_manager/category.html", context=context)
+        return render(request, "task_manager/category.html", context)
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
