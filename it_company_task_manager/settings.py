@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
 
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,9 +24,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ("django-insecure-tatel"
-              "(dkgb9hxbv1v&bl9+vefg2kcjwm7egpaf_62b3$9051#0")
+load_dotenv()
+
+
+def get_env_variable(var_name):
+    value = os.getenv(var_name)
+    if value is None:
+        raise ImproperlyConfigured(f"Missing environment variable: {var_name}")
+    return value
+
+
+SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
