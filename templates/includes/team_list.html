@@ -1,0 +1,15 @@
+{% load static %}
+{% for worker in workers%}
+  <ul class="w3-ul w3-card-4 w3-white">
+    <li class="w3-padding-16 w3-hover-gray" onclick="location.href='{% url "task_manager:worker-detail" pk=worker.pk %}';" style="cursor: pointer;">
+      <img
+        src="{% static 'images/worker-cart.svg' %}"
+        alt="worker"
+        class="w3-left w3-circle w3-margin-right"
+        style="width:{{ image_size }}px"
+      ><span class="w3-x{{ line_size }}">{{ worker.username }}</span><br>
+    </li>
+  </ul>
+{% empty %}
+  <h3>{{ empty_text }}</h3>
+{% endfor %}

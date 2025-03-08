@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- Header -->
+  <header class="w3-container " style="padding-top:22px">
+    <h5><b>My task statistic</b></h5>
+  </header>
+
+  {% include 'includes/statistic_blocks.html' with num_all_tasks=tasks.all.count %}
+
+
+
+  <div class="w3-container">
+    <div class="w3-topbar w3-bottombar w3-border-blue">
+      <h5>
+        Current project:
+        <a class="w3-button" href="{% url 'task_manager:project-detail' pk=project.id %}">
+          <img src="{% static 'images/project.svg' %}" alt="logout" style="width:18px;height:18px;">
+          <b>{{ project.project_name }}</b>
+        </a>
+      </h5>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-green" style="width:{{ percentage_complete_project }}%">Project progress ({{ percentage_complete_project }}%) </div>
+      </div>
+      <br>
+    </div>
+    <br>
+    <h5 class="w3-cell">Current tasks:</h5>
+    <br>
+    {% include "includes/task_table.html" with tasks=tasks show_active=True show_overdue=True show_completed=False %}
+  </div>
+
+  <div class="w3-container">
+    <h5>My team:</h5>
+    {% include 'includes/team_list.html' with workers=team_workers image_size=35 line_size="large" empty_text="You alone in this team" %}
+  </div>
+{% endblock %}

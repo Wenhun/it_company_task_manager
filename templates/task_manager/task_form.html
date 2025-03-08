@@ -1,0 +1,7 @@
+{% include "includes/form.html" with model_name="task"%}
+
+{% block inputs %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <input type="hidden" name="worker_id" value="{{ request.GET.worker_id }}">
+    <input type="hidden" name="project_id" value="{{ request.GET.project_id }}">
+{% endblock %}

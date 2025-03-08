@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load task_type_image_changer %}
+
+{% block content %}
+  <header class="w3-container w3-green">
+    {% if worker.first_name and worker.last_name %}
+      <h1>{{ worker.first_name }} {{ worker.last_name }}</h1>
+    {% else %}
+      <h1>{{ worker.username }}</h1>
+    {% endif %}
+    <h2>Position: {{ worker.position }}</h2>
+  </header>
+  <div class="w3-container">
+    <h3>Worker Detail:</h3>
+    <p>Username: {{ worker.username }}</p>
+    <p>E-mail: {{ worker.email }}</p>
+    <p>
+      Current team: <a href="{% url 'task_manager:team-detail' pk=worker.team.pk %}">{{ worker.team }}</a> work on project
+      <a href="{% url 'task_manager:project-detail' pk=worker.team.project.pk %}">
+        {{ worker.team.project.project_name }}
+      </a>
+    </p>
+  </div>
+
+  <div class="w3-container">
+    <h5><b>{{ worker.username }} statistic</b></h5>
+  </div>
+
+  {% include 'includes/statistic_blocks.html' %}
+
+  <h3 class="w3-container w3-cell">All tasks:</h3>
+  <a class="w3-button w3-cell w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}&worker_id={{ worker.id }}">Add new task</a>
+  <hr>
+
+  <div class="w3-container">
+    <button
+        onclick="accordion_function('active_tasks')"
+        class="w3-button w3-block w3-left-align w3-blue">
+      Active tasks..
+    </button>
+
+    <div id="active_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=not_completed_tasks show_active=True show_overdue=True show_completed=False %}
+    </div>
+
+    <button
+        onclick="accordion_function('completed_tasks')"
+        class="w3-button w3-block w3-left-align w3-green">
+      Completed tasks...
+    </button>
+
+    <div id="completed_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=completed_tasks show_completed=True%}
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <a href="{% url 'task_manager:worker-update' pk=worker.pk %}" class="w3-button w3-blue">
+      Update
+    </a>
+    <a href="{% url 'task_manager:worker-delete' pk=worker.pk %}" class="w3-button w3-red">
+      Delete
+    </a>
+  </div>
+
+  {% include 'includes/accordion_function.html' %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load static %}
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      {% if user.is_authenticated %}
+        <span>Welcome, <strong>{{ user.get_username }}</strong></span><br>
+        <a href="{% url 'task_manager:worker-detail' pk=user.pk %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+        <form  method="post" action="{% url 'admin:logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="w3-bar-item w3-button" >
+            <img src="{% static 'images/logout.svg' %}" alt="logout" style="width:18px;height:18px;">
+          </button>
+        </form>
+      {% else %}
+        <span><strong>Please, login</strong></span><br>
+         <a href="{% url 'login' %}" class="w3-bar-item w3-button"><img src="{% static 'images/login.svg' %}" alt="login" style="width:18px;height:18px;"></a>
+      {% endif %}
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a href="{% url 'task_manager:index' %}" class="w3-bar-item w3-button w3-padding "><img src="{% static 'images/home.svg' %}" alt="home" class="sidebar_image">  Home</a>
+    <a href="{% url 'task_manager:task-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/tasks_all_sidebar.svg' %}" alt="all tasks" class="sidebar_image">  Tasks</a>
+    <a href="{% url 'task_manager:project-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/project.svg' %}" alt="all tasks" class="sidebar_image">  Projects</a>
+    <a href="{% url 'task_manager:worker-list' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/worker.svg' %}" alt="all tasks" class="sidebar_image">  Workers</a>
+    <a href="{% url 'task_manager:team-list' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw sidebar_image"></i>  Teams</a>
+    <a href="{% url 'task_manager:categories' %}" class="w3-bar-item w3-button w3-padding"><img src="{% static 'images/category.svg' %}" alt="all tasks" class="sidebar_image">  Categories</a>
+  </div>
+</nav>

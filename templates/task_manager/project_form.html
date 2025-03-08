@@ -1,0 +1,5 @@
+{% include "includes/form.html" with model_name="project"%}
+
+{% block inputs %}
+  <input type="hidden" name="next" value="{{ request.GET.next }}">
+{% endblock %}

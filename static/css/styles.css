@@ -1,0 +1,18 @@
+.sidebar_image {
+  width:18px;
+  height:18px
+}
+
+.statistic_block_image {
+  width:56px;
+  height:56px;
+}
+
+.accordion_filters {
+  --base-margin: 20px;
+  margin-left: var(--base-margin);
+}
+
+.accordion_filters-double-margin {
+  margin-left: calc(var(--base-margin) * 1.5);
+}
