@@ -29,7 +29,7 @@ from task_manager.views import (
     PositionCreateView,
     PositionUpdateView,
     PositionDeleteView,
-    set_task_as_completed,
+    SetTaskAsCompletedView,
 )
 
 app_name = "task_manager"
@@ -140,7 +140,7 @@ urlpatterns = [
     ),
     path(
         "categories/tasks/<int:pk>/set_task_as_completed",
-        set_task_as_completed,
+        SetTaskAsCompletedView.as_view(),
         name="set-task-as-completed",
     ),
 ]

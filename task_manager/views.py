@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet, Q
@@ -31,7 +30,8 @@ class IndexView(LoginRequiredMixin, TemplateView):
         current_user = self.request.user
         current_user_id = current_user.id
 
-        tasks = Task.objects.prefetch_related("assignees").filter(assignees=current_user_id)
+        tasks = Task.objects.prefetch_related("assignees").filter(
+            assignees=current_user_id)
         project = current_user.team.project
         num_completed_tasks = tasks.filter(is_completed=True).count()
         num_not_completed_tasks = tasks.filter(is_completed=False).count()
@@ -370,10 +370,10 @@ class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:team-list")
 
 
-@login_required
-def set_task_as_completed(request: HttpRequest, pk: int) -> HttpResponse:
-    task = Task.objects.get(pk=pk)
-    task.is_completed = True
-    task.save()
-    return HttpResponseRedirect(
-        reverse_lazy("task_manager:task-detail", args=[pk]))
+class SetTaskAsCompletedView(LoginRequiredMixin, View):
+    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        task = get_object_or_404(Task, pk=kwargs["pk"])
+        task.is_completed = True
+        task.save()
+        return HttpResponseRedirect(
+            reverse_lazy("task_manager:task-detail", args=[task.pk]))
