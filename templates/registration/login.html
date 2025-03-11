@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="w3-container w3-green">
+  <h1>Login</h1>
+</header>
+
+<div class="w3-container">
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+
+  {% if next %}
+    <p>Please login to see this page.</p>
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_username">Username:</label>
+      <input type="text" name="username" id="id_username" class="w3-input">
+    </div>
+
+    <div class="form-group">
+      <label for="id_password">Password:</label>
+      <input type="password" name="password" id="id_password" class="w3-input">
+    </div>
+    <br>
+    <input type="submit" value="Login" class="w3-button w3-green" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+
+</div>
+{% endblock %}

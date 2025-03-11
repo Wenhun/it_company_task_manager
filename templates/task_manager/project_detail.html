@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if project.status == "Active" and not is_overdue%}
+    <header class="w3-container w3-blue">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }} Deadline: {{ project.deadline }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Active" and is_overdue%}
+    <header class="w3-container w3-red">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }} Deadline: {{ project.deadline }}
+        The project is {{ days_difference }} days overdue!!
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Canceled"%}
+    <header class="w3-container w3-orange">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "On Hold"%}
+    <header class="w3-container w3-gray">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
+
+  {% if project.status == "Completed"%}
+    <header class="w3-container w3-green">
+      <h1>
+        {{ project.project_name }}
+        Status:
+          {{ project.status }}
+      </h1>
+    </header>
+  {% endif %}
+
+  <div class="w3-container">
+
+    <h3>Project Detail:</h3>
+    <p>{{ project.description }}</p>
+    <p>Project budget: {{ project.budget }} $</p>
+
+    <h3>Teams:</h3>
+    <ul>
+      {% for team in  project.teams.all %}
+        <li>
+          <a href="{% url 'task_manager:team-detail' pk=team.pk %}"><i class="fa fa-users fa-fw"></i> {{ team }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <h3 class="w3-container w3-cell">All tasks:</h3>
+  <a class="w3-button w3-cell w3-green" style="margin-left: 20px;" href="{% url 'task_manager:task-create' %}?next={{ request.path }}&project_id={{ project.id }}">Add new task</a>
+  <br>
+  <div class="w3-container">
+    <button
+      onclick="accordion_function('active_tasks')"
+      class="w3-button w3-block w3-left-align w3-blue">
+    Active tasks..
+    </button>
+    <div id="active_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=project.tasks.all show_active=True show_overdue=True show_completed=False %}
+    </div>
+
+    <button
+      onclick="accordion_function('completed_tasks')"
+      class="w3-button w3-block w3-left-align w3-green">
+    Completed tasks...
+    </button>
+    <div id="completed_tasks" class="w3-hide w3-container">
+      {% include "includes/task_table.html" with tasks=completed_tasks show_completed=True %}
+    </div>
+  <hr>
+
+  <div class="w3-container">
+    <a href="{% url 'task_manager:project-delete' pk=project.pk%}" class="w3-button w3-red">
+      Delete
+    </a>
+    <a href="{% url 'task_manager:project-update' pk=project.pk%}?next={{ request.path }}" class="w3-button w3-blue">
+      Update
+    </a>
+  </div>
+</div>
+
+  {% include 'includes/accordion_function.html' %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load query_transform %}
+
+{% if is_paginated %}
+<div class="w3-center w3-bar w3-border w3-round">
+    {% if page_obj.has_previous %}
+      <a class="w3-button" href="?{% query_transform request page=page_obj.previous_page_number %}">Prev</a>
+    {% endif %}
+  <span class="">{{ page_obj.number }} of {{ paginator.num_pages }} </span>
+    {% if page_obj.has_next %}
+      <a class="w3-button" href="?{% query_transform request page=page_obj.next_page_number %}">Next</a>
+    {% endif %}
+</div>
+{% endif %}

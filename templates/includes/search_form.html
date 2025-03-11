@@ -1,0 +1,12 @@
+{% load query_transform %}
+<form method="get" action="">
+    {% for key, value in request.GET.items %}
+      {% if key != 'search' %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+      {% endif %}
+  {% endfor %}
+
+  {{ search_form.as_p }}
+  <input class="w3-button w3-green" type="submit" value="🔍">
+</form>
+<hr>

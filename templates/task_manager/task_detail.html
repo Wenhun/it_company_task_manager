@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load task_type_image_changer %}
+{% load static %}
+
+{% block content %}
+  <hr>
+  {% if task.is_completed %}
+    <header class="w3-container w3-green">
+  {% else %}
+    <header class="w3-container w3-blue">
+  {% endif %}
+    <h1>
+      {{ task.name }}
+      {% if not task.is_completed %}
+        Deadline: {{ task.deadline }}
+      {% else %}
+        Completed!
+      {% endif %}
+    </h1>
+  </header>
+    {% if is_overdue and not task.is_completed%}
+      <h1 class="w3-panel w3-red" >the task is {{ days_difference }} days overdue.</h1>
+    {% endif %}
+  <div class="w3-container">
+    <h3>Category: <img src="{% static task.task_type.name|task_image %}" alt="{{ task.task_type.name }}" style="width:30px;height:30px;"> {{ task.task_type }}</h3>
+    <h3>Project: <a href="{% url 'task_manager:project-detail' pk=task.project.pk %}">{{ task.project.project_name }}</a></h3>
+  </div>
+
+  <div class="w3-container">
+    <h3>Task Detail:</h3>
+  </div>
+
+  <div class="w3-panel w3-pale-green w3-border w3-round" style="padding: 10px; margin: 10px">{{ task.description }}</div>
+    <div class="w3-container">
+      <h5>Assignees:</h5>
+      {% include 'includes/team_list.html' with workers=task.assignees.all image_size=25 line_size="medium" empty_text="No more workers" %}
+  </div>
+  <hr>
+  <div class="w3-container">
+    {% if not task.is_completed %}
+      <a href="{% url 'task_manager:set-task-as-completed' pk=task.pk %}" class="w3-button w3-green">Set task as completed!</a>
+    {% else %}
+      <a href="#" class="w3-button w3-gray" disabled="true">Task Already Completed</a>
+    {% endif %}
+  </div>
+  <hr>
+  <div class="w3-container">
+    <a href="{% url 'task_manager:task-update' pk=task.pk %}?next={{ request.path }}" class="w3-button w3-blue">Update</a>
+    <a href="{% url 'task_manager:task-delete' pk=task.pk %}" class="w3-button w3-red">Delete</a>
+  </div>
+{% endblock %}
